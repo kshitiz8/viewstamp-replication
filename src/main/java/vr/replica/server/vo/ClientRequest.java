@@ -1,26 +1,40 @@
 package vr.replica.server.vo;
 
-public class Operation {
+public class ClientRequest {
 	int opNumber;
-	int op;
-	String response;
+	int viewNumber;
+	String clientId;
+	long sequenceNumber;
+	String message;
+	
 	public int getOpNumber() {
 		return opNumber;
 	}
 	public void setOpNumber(int opNumber) {
 		this.opNumber = opNumber;
 	}
-	public int getOp() {
-		return op;
+	public String getClientId() {
+		return clientId;
 	}
-	public void setOp(int op) {
-		this.op = op;
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
-	public String getResponse() {
-		return response;
+	public long getSequenceNumber() {
+		return sequenceNumber;
 	}
-	public void setResponse(String response) {
-		this.response = response;
+	public void setSequenceNumber(long sequenceNumber) {
+		this.sequenceNumber = sequenceNumber;
 	}
-	
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public int getViewNumber() {
+		return viewNumber;
+	}
+	public void setViewNumber(int viewNumber) {
+		this.viewNumber = viewNumber;
+	}
 }
