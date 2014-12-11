@@ -7,11 +7,7 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 
-import vr.replica.server.thrift.RedirectResponse;
-import vr.replica.server.thrift.ReplicaService;
-import vr.replica.server.thrift.ResponseCode;
-import vr.replica.server.thrift.ResponseStruct;
-import vr.replica.server.vo.ProxyConfiguration;
+import vr.code.vo.ProxyConfiguration;
 
 public class VRProxy {
 
@@ -44,66 +40,66 @@ public class VRProxy {
 	public static void main(String [] args) {
 		VRProxy proxy = new VRProxy();
 		proxy.init();
-		try {
-			proxy.execute("1");
-		} catch (VRProxyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			proxy.execute("1");
+//		} catch (VRProxyException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
-	public String execute(String message) throws VRProxyException{
-		if(pConf.isIdle()){
-			pConf.setIdle(false);
-			pConf.setSerialNumber(System.currentTimeMillis());
-			for(int i = 0; i < REREQUEST_TIMEOUT; i++){
-				ResponseStruct response = request(message);
-				switch (response.getResponseCode()) {
-				case accepted: //TODO: put wait condition
-					break;
-				case redirected:
-					pConf.setPrimaryReplica(
-							response.getResponseUnion().
-							getRedirectResponse().getPrimaryReplica()
-							);
-					break;
-				case completed:
-					pConf.setIdle(true);
-					System.out.println(response.responseUnion.getSuccessResponse().getResponseString());
-					return response.responseUnion.getSuccessResponse().getResponseString();
-				case failed:	
-					pConf.setIdle(true);
-					throw new VRProxyException(
-							response.responseUnion.getFailureResponse().getResponseString());
-				default:
-					break;
-				}
-			}
-			throw new VRProxyException("Server Error");
-		}else {
-			throw new VRProxyException("Proxy in use");
-		}
-	}
-	
-	public ResponseStruct request(String m){
-		String connectionString[] = pConf.getQouroms().get(pConf.getPrimaryReplica()).split(":");
-		try {
-			TTransport transport;
-			transport = new TSocket(connectionString[0],
-					Integer.parseInt(connectionString[1]),
-					REQUEST_TIMEOUT);
-			transport.open();
-			TProtocol protocol = new  TBinaryProtocol(transport);
-			ReplicaService.Client client = new ReplicaService.Client(protocol);
-			ResponseStruct response = client.request(m, 
-					Integer.toString(pConf.getProxyId()), 
-					pConf.getSerialNumber()
-					);
-			transport.close();
-			return response;
-		} catch (TException x) {
-			x.printStackTrace();
-		}
-		return null;
-	}
+//	public String execute(String message) throws VRProxyException{
+//		if(pConf.isIdle()){
+//			pConf.setIdle(false);
+//			pConf.setSerialNumber(System.currentTimeMillis());
+//			for(int i = 0; i < REREQUEST_TIMEOUT; i++){
+//				ResponseStruct response = request(message);
+//				switch (response.getResponseCode()) {
+//				case accepted: //TODO: put wait condition
+//					break;
+//				case redirected:
+//					pConf.setPrimaryReplica(
+//							response.getResponseUnion().
+//							getRedirectResponse().getPrimaryReplica()
+//							);
+//					break;
+//				case completed:
+//					pConf.setIdle(true);
+//					System.out.println(response.responseUnion.getSuccessResponse().getResponseString());
+//					return response.responseUnion.getSuccessResponse().getResponseString();
+//				case failed:	
+//					pConf.setIdle(true);
+//					throw new VRProxyException(
+//							response.responseUnion.getFailureResponse().getResponseString());
+//				default:
+//					break;
+//				}
+//			}
+//			throw new VRProxyException("Server Error");
+//		}else {
+//			throw new VRProxyException("Proxy in use");
+//		}
+//	}
+//	
+//	public ResponseStruct request(String m){
+//		String connectionString[] = pConf.getQouroms().get(pConf.getPrimaryReplica()).split(":");
+//		try {
+//			TTransport transport;
+//			transport = new TSocket(connectionString[0],
+//					Integer.parseInt(connectionString[1]),
+//					REQUEST_TIMEOUT);
+//			transport.open();
+//			TProtocol protocol = new  TBinaryProtocol(transport);
+//			ReplicaService.Client client = new ReplicaService.Client(protocol);
+//			ResponseStruct response = client.request(m, 
+//					Integer.toString(pConf.getProxyId()), 
+//					pConf.getSerialNumber()
+//					);
+//			transport.close();
+//			return response;
+//		} catch (TException x) {
+//			x.printStackTrace();
+//		}
+//		return null;
+//	}
 }

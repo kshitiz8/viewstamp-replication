@@ -4,22 +4,21 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package vr.replica.server.thrift;
+package vr.thrift;
 
 
 import java.util.Map;
 import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum ResponseCode implements org.apache.thrift.TEnum {
+public enum RequestResponseCode implements org.apache.thrift.TEnum {
   redirected(0),
-  accepted(1),
-  completed(2),
-  failed(3);
+  completed(1),
+  failed(2);
 
   private final int value;
 
-  private ResponseCode(int value) {
+  private RequestResponseCode(int value) {
     this.value = value;
   }
 
@@ -34,15 +33,13 @@ public enum ResponseCode implements org.apache.thrift.TEnum {
    * Find a the enum type by its integer value, as defined in the Thrift IDL.
    * @return null if the value is not found.
    */
-  public static ResponseCode findByValue(int value) { 
+  public static RequestResponseCode findByValue(int value) { 
     switch (value) {
       case 0:
         return redirected;
       case 1:
-        return accepted;
-      case 2:
         return completed;
-      case 3:
+      case 2:
         return failed;
       default:
         return null;

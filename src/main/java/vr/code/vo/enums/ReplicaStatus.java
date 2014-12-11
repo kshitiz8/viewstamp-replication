@@ -1,4 +1,4 @@
-package vr.replica.server.vo.enums;
+package vr.code.vo.enums;
 
 public enum ReplicaStatus {
 	normal,

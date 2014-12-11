@@ -1,9 +1,10 @@
-package vr.replica.server.vo;
+package vr.code.vo;
 
 import java.util.HashMap;
 import java.util.List;
 
-import vr.replica.server.vo.enums.ReplicaStatus;
+import vr.code.vo.enums.ReplicaStatus;
+import vr.thrift.Log;
 
 
 public class ReplicaState {
@@ -25,7 +26,7 @@ public class ReplicaState {
 	int viewNumber = 0;
 	ReplicaStatus status;
 	int opNumber = 0;
-	List<ReplicaLog> logs;
+	List<Log> logs;
 	int commitNumber;
 	int checkPoint;
 	HashMap<String, ClientRequest > clientTable;
@@ -46,7 +47,7 @@ public class ReplicaState {
 	public int getOpNumber() {
 		return opNumber;
 	}
-	public List<ReplicaLog> getLogs() {
+	public List<Log> getLogs() {
 		return logs;
 	}
 	public int getCommitNumber() {
@@ -58,22 +59,9 @@ public class ReplicaState {
 	public HashMap<String, ClientRequest> getClientTable() {
 		return clientTable;
 	}
-	
-	public synchronized int getNextOpNumber(){
-		opNumber = opNumber +1;
-		return opNumber;
-	}
-	public int getPrimaryReplica(){
-		return viewNumber % qouroms.size();
-	}
-	public boolean isPrimaryReplica(){
-		return getPrimaryReplica() == replicaNumber;
-	}
+
 	public void setQouroms(List<String> qouroms) {
 		this.qouroms = qouroms;
-	}
-	public synchronized void setStatus(ReplicaStatus status) {
-		this.status = status;
 	}
 	public void setReplicaNumber(int replicaNumber) {
 		this.replicaNumber = replicaNumber;
@@ -87,8 +75,34 @@ public class ReplicaState {
 	public void setClientTable(HashMap<String, ClientRequest> clientTable) {
 		this.clientTable = clientTable;
 	}
-	public void setLogs(List<ReplicaLog> logs) {
+	public void setLogs(List<Log> logs) {
 		this.logs = logs;
+	}
+	public void setViewNumber(int viewNumber) {
+		this.viewNumber = viewNumber;
+	}
+	public void setOpNumber(int opNumber) {
+		this.opNumber = opNumber;
+	}
+	public void setCommitNumber(int commitNumber) {
+		this.commitNumber = commitNumber;
+	}
+	public void setCheckPoint(int checkPoint) {
+		this.checkPoint = checkPoint;
+	}
+	//-------
+	public synchronized void setStatus(ReplicaStatus status) {
+		this.status = status;
+	}
+	public synchronized int getNextOpNumber(){
+		opNumber = opNumber +1;
+		return opNumber;
+	}
+	public int getPrimaryReplica(){
+		return viewNumber % qouroms.size();
+	}
+	public boolean isPrimaryReplica(){
+		return getPrimaryReplica() == replicaNumber;
 	}
 	
 }

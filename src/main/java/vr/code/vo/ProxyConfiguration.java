@@ -1,4 +1,4 @@
-package vr.replica.server.vo;
+package vr.code.vo;
 
 import java.util.List;
 
