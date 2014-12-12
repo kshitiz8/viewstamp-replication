@@ -24,6 +24,16 @@ public class VRProxyCallbacks {
 			public int getReplicaNumber(){
 				return requestParameter.getReplicaNumber();
 			}
+			
+			
+			public void retry(int targetReplica){
+				VRProxy.callRequest(targetReplica,
+						VRProxy.REQUEST_TIMEOUT, 
+						requestParameter, 
+						VRProxyCallbacks.prepareCallback(requestParameter)
+						);
+			}
+			
 			@Override
 			public void onError(Exception arg0) {
 				LOGGER.info(requestParameter.toString());
@@ -32,15 +42,10 @@ public class VRProxyCallbacks {
 					pConf.setIdle(true);
 				}else{
 					LOGGER.error(getReplicaNumber()+"-Replica - RPCRequest - Failed, trying a different replica",arg0);
-					int retry = requestParameter.getRetryCount() + 1;
-					int newTargetReplica = (pConf.getPrimaryReplica()+retry)%pConf.getQouroms().size();
-					requestParameter.setRetryCount(retry);
-					requestParameter.setReplicaNumber(newTargetReplica);
-					VRProxy.callRequest(newTargetReplica,
-								VRProxy.REQUEST_TIMEOUT, 
-								requestParameter, 
-								VRProxyCallbacks.prepareCallback(requestParameter)
-								);
+					int trial = requestParameter.getRetryCount() + 1;
+					int targetReplica = (pConf.getPrimaryReplica()+trial)%pConf.getQouroms().size();
+					requestParameter.setRetryCount(trial);
+					requestParameter.setReplicaNumber(targetReplica);
 				}
 			}
 

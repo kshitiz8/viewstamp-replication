@@ -1,12 +1,14 @@
 package vr.code.service;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
 import vr.thrift.ClientRequest;
 import vr.thrift.Log;
+import vr.thrift.LogStatus;
 import vr.thrift.ReplicaStatus;
 
 
@@ -27,6 +29,7 @@ public class ReplicaState {
 	List<String> qouroms ;
 	int replicaNumber;
 	int viewNumber = 0;
+	int prevViewNumber = 0;
 	ReplicaStatus status;
 	int opNumber = 0;
 	TreeMap<Integer,Log> logs;
@@ -34,9 +37,43 @@ public class ReplicaState {
 	int checkPoint;
 	HashMap<String, ClientRequest > clientTable;
 	ArrayDeque<ClientRequest> requestQueue;
+	long primaryLastTimestamp;
+	List<Boolean> startViewChangeRequests = new ArrayList<Boolean>();
+	List<Boolean> doViewChangeRequests = new ArrayList<Boolean>();
+	TreeMap<Integer,Log> doViewChangeMaxLog ;
 	
 	
+	public TreeMap<Integer, Log> getDoViewChangeMaxLog() {
+		return doViewChangeMaxLog;
+	}
+	public void setDoViewChangeMaxLog(TreeMap<Integer, Log> doViewChangeMaxLog) {
+		this.doViewChangeMaxLog = doViewChangeMaxLog;
+	}
+	public int getPrevViewNumber() {
+		return prevViewNumber;
+	}
+	public void setPrevViewNumber(int prevViewNumber) {
+		this.prevViewNumber = prevViewNumber;
+	}
 	
+	public List<Boolean> getStartViewChangeRequests() {
+		return startViewChangeRequests;
+	}
+	public void setStartViewChangeRequests(List<Boolean> startViewChangeRequests) {
+		this.startViewChangeRequests = startViewChangeRequests;
+	}
+	public List<Boolean> getDoViewChangeRequests() {
+		return doViewChangeRequests;
+	}
+	public void setDoViewChangeRequests(List<Boolean> doViewChangeRequests) {
+		this.doViewChangeRequests = doViewChangeRequests;
+	}
+	public long getPrimaryLastTimestamp() {
+		return primaryLastTimestamp;
+	}
+	public void setPrimaryLastTimestamp(long primaryLastTimestamp) {
+		this.primaryLastTimestamp = primaryLastTimestamp;
+	}
 	public List<String> getQouroms() {
 		return qouroms;
 	}
@@ -110,6 +147,14 @@ public class ReplicaState {
 		opNumber = opNumber +1;
 		return opNumber;
 	}
+	public synchronized int getNextViewNumber(){
+		if(status == ReplicaStatus.normal){
+			prevViewNumber = viewNumber;
+			status = ReplicaStatus.view_change;
+		}
+		viewNumber = viewNumber +1;
+		return viewNumber;
+	}
 	public int getPrimaryReplica(){
 		return viewNumber % qouroms.size();
 	}
@@ -120,5 +165,10 @@ public class ReplicaState {
 	public int majoity(){
 		return (int)getQouroms().size()/2 + 1;
 	}
-	
+	public void setLogStatus(int opNumber, int replicaNumber, LogStatus logStatus){
+		this.logs.get(opNumber).getLogStatuses().set(replicaNumber, logStatus);
+	}
+	public void updatePrimaryLastTimestamp(){
+		setPrimaryLastTimestamp(System.currentTimeMillis());
+	}
 }

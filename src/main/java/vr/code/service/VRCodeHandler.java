@@ -2,21 +2,25 @@ package vr.code.service;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import vr.code.client.api.VRCodeClientAPI;
+import vr.code.client.callback.GetStateCallback;
 import vr.thrift.ClientRequest;
 import vr.thrift.CommitParameter;
 import vr.thrift.CommitResponse;
+import vr.thrift.DoViewChangeParameter;
 import vr.thrift.DoViewChangeResponse;
+import vr.thrift.GetStateParameter;
 import vr.thrift.GetStateResponse;
 import vr.thrift.Log;
 import vr.thrift.LogStatus;
 import vr.thrift.PrepareParameter;
 import vr.thrift.PrepareResponse;
+import vr.thrift.RecoveryParameter;
 import vr.thrift.RecoveryResponse;
 import vr.thrift.ReplicaStatus;
 import vr.thrift.RequestAccept;
@@ -27,11 +31,16 @@ import vr.thrift.RequestResponse;
 import vr.thrift.RequestResponseCode;
 import vr.thrift.RequestSuccess;
 import vr.thrift.RequestUnion;
+import vr.thrift.StartViewChangeParameter;
 import vr.thrift.StartViewChangeResponse;
+import vr.thrift.StartViewParameter;
 import vr.thrift.StartViewResponse;
 import vr.thrift.VRCodeService;
-
-
+/**
+ * 
+ * @author Kshitiz Tripathi
+ *
+ */
 public class VRCodeHandler implements  VRCodeService.Iface{
 	private static final Logger LOGGER = LoggerFactory.getLogger(VRCodeHandler.class);
 
@@ -141,8 +150,12 @@ public class VRCodeHandler implements  VRCodeService.Iface{
 	@Override
 	public PrepareResponse rpcPrepare(PrepareParameter prepareParameter)
 			throws TException {
-		
 		PrepareResponse response = new PrepareResponse();
+		replicaState.updatePrimaryLastTimestamp();
+		
+		if(replicaState.getStatus() != ReplicaStatus.normal){
+			return new PrepareResponse(false,false);
+		}
 		
 		int viewNumber = prepareParameter.getViewNumber();
 		RequestParameter message = prepareParameter.getMessage();
@@ -176,11 +189,23 @@ public class VRCodeHandler implements  VRCodeService.Iface{
 				replicaState.setOpNumber(opNumber);
 				response.setPrepareOk(true);
 			}else if(opNumber > replicaState.getOpNumber() + 1 ){
-				LOGGER.info("handle...get previous logs");
+				replicaState.setStatus(ReplicaStatus.recovering);
+				GetStateParameter getStateParameter 
+							= new GetStateParameter(replicaState.viewNumber,
+												replicaState.getOpNumber(), 
+												replicaState.getReplicaNumber(),0);
+				
+				VRCodeClientAPI.callGetState(replicaState.getPrimaryReplica(), 
+						Constants.GET_STATE_TIMEOUT,
+						getStateParameter , new GetStateCallback(getStateParameter));
+				
 				response.setPrepareOk(false);
+				response.setCommitOk(false);
+				return response;
 			}
 			
 			if(commitNumber <= replicaState.getOpNumber()){
+				
 				replicaState.setCommitNumber(commitNumber);
 				response.setCommitOk(true);
 			}else{
@@ -188,51 +213,68 @@ public class VRCodeHandler implements  VRCodeService.Iface{
 			}
 			return response;
 		}
-		
-		
 		return new PrepareResponse();
 	}
 
 	@Override
 	public CommitResponse rpcCommit(CommitParameter commitParameter)
 			throws TException {
+		replicaState.updatePrimaryLastTimestamp();
+		CommitResponse commitResponse = new CommitResponse();
+		if(replicaState.getStatus() != ReplicaStatus.normal){
+			return new CommitResponse(false);
+		}
+		
 		int viewNumber = commitParameter.getViewNumber();
 		int commitNumber = commitParameter.getCommitNumber();
+		if(viewNumber == replicaState.viewNumber && commitNumber <=replicaState.opNumber ){
+			replicaState.setCommitNumber(commitNumber);
+			return new CommitResponse(true);
+		}else{
+			return new CommitResponse(false);
+		}
+	}
+
+
+	@Override
+	public GetStateResponse rpcGetState(GetStateParameter getStateParameter) throws TException {
+		if(replicaState.getStatus() != ReplicaStatus.normal){
+			return new GetStateResponse(-1,null,-1,-1,-1);
+		}
+		int viewNumber = getStateParameter.getViewNumber();
+		int opNumber  = getStateParameter.getOpNumber();
+		return new GetStateResponse(replicaState.getViewNumber(), replicaState.getLogs().subMap(opNumber, replicaState.opNumber), -1, replicaState.getOpNumber(), replicaState.getCommitNumber());
+	}
+
+	@Override
+	public StartViewChangeResponse rpcStartViewChange(
+			StartViewChangeParameter startViewChangeParameter)
+			throws TException {
+		if(startViewChangeParameter.getNewViewNumber() > replicaState.getViewNumber())
+		while(startViewChangeParameter.getNewViewNumber() > replicaState.getViewNumber()){
+			replicaState.getNextViewNumber();
+		}
+		
 		return null;
 	}
 
 	@Override
-	public StartViewChangeResponse rpcStartViewChange(int newViewNumber,
-			int replicaNumber) throws TException {
+	public DoViewChangeResponse rpcDoViewChange(
+			DoViewChangeParameter doViewChangeParameter) throws TException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public DoViewChangeResponse rpcDoViewChange(int newViewNumber,
-			List<Log> log, int oldViewNumber, int checkPoint, int opNumber,
-			int commitNumber, int replicaNumber) throws TException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public StartViewResponse rpcStartView(int viewNo, List<Log> log,
-			int checkPoint, int opNumber, int commitNumber) throws TException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public RecoveryResponse rpcRecovery(int replicaNumber, byte nonce)
+	public StartViewResponse rpcStartView(StartViewParameter startViewParameter)
 			throws TException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public GetStateResponse rpcGetState(int viewNumber, int opNumber,
-			int replicaNumber) throws TException {
+	public RecoveryResponse rpcRecovery(RecoveryParameter recoveryParameter)
+			throws TException {
 		// TODO Auto-generated method stub
 		return null;
 	}

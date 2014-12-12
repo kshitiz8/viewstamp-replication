@@ -107,68 +107,98 @@ struct CommitResponse{
 /*-------------
 * RPC StartViewChange
 */
-struct StartViewChangeResponse{
-	1: int replicaNumber;
-	2: int newViewNumber;	
-	3: bool success; 
+struct StartViewChangeParameter{
+	1: int newViewNumber;
+	2: int replicaNumber;
 }
-
+struct StartViewChangeResponse{
+	 
+}
+/*
+*
+*/
+struct DoViewChangeParameter{
+	1: int newViewNumber; 
+	2: map<int,Log> logs;
+	3: int oldViewNumber;
+	4: int checkPoint; 
+	5: int opNumber;
+	6: int commitNumber; 
+	7: int replicaNumber;
+	8: int retryCount =0;
+}
 struct DoViewChangeResponse{
 	1: int replicaNumber; 
 	2: int newViewNumber;
 	3: bool success; 
 
 }
+
+/*
+* RPC StartView
+*/
+struct StartViewParameter{
+	1: int viewNumber;
+	2: map<int,Log> logs; 
+	3: int checkPoint;
+	4: int opNumber;
+	5: int commitNumber;
+	6: int replicaNumber;
+	7: int retryCount =0;
+}
 struct StartViewResponse{
 	1: int replicaNumber;
 	2: int newViewNumber;
 	3: bool success; 
 }
-
+/*
+* RPC Recovery
+*/
+struct RecoveryParameter{
+	1: int replicaNumber; 
+	2: byte nonce;
+	3: int retryCount =0;
+}
 struct RecoveryResponse{
 	1: int viewNumber; 
-	2: list<Log> log;
+	2: map<int,Log> logs;
 	3: byte nonce;
 	4: int checkPoint; 
 	5: int opNumber;
 	6: int commitNumber; 
 	7: int replicaNumber;
 }
-
+/*
+* RPC GetState
+*/
+struct GetStateParameter{
+	1: int viewNumber;
+	2: int opNumber;
+	3: int replicaNumber;
+	4: int retryCount =0;
+}
 struct GetStateResponse{
 	1: int viewNumber;
-	2: list<Log> log;
+	2: map<int,Log> logs;
 	3: int checkPoint; 
 	4: int opNumber;
-	5: int commitNumber;
+	5: int commitNumber; 
 }
 
 service VRCodeService{
         RequestResponse rpcRequest(1: RequestParameter requestParameter),
         						
-		PrepareResponse rpcPrepare (2: PrepareParameter prepareParameter),
+		PrepareResponse rpcPrepare (1: PrepareParameter prepareParameter),
 									
-		CommitResponse rpcCommit(3: CommitParameter commitParameter),
+		CommitResponse rpcCommit(1: CommitParameter commitParameter),
 		
-		StartViewChangeResponse rpcStartViewChange(1: int newViewNumber, 
-												2: int replicaNumber),
+		StartViewChangeResponse rpcStartViewChange(1: StartViewChangeParameter startViewChangeParameter),
 								
-		DoViewChangeResponse rpcDoViewChange(1: int newViewNumber, 
-											2: list<Log> log, 
-											3: int oldViewNumber,
-											4: int checkPoint, 
-											5: int opNumber, 
-											6: int commitNumber, 
-											7: int replicaNumber),
+		DoViewChangeResponse rpcDoViewChange(1: DoViewChangeParameter doViewChangeParameter),
 							
-		StartViewResponse rpcStartView(1: int viewNumber, 
-									2: list<Log> log, 
-									3: int checkPoint, 
-									4: int opNumber, 
-									5: int commitNumber),
+		StartViewResponse rpcStartView(1: StartViewParameter startViewParameter),
 		
-								
-  		RecoveryResponse rpcRecovery(1: int replicaNumber, 2: byte nonce),
+  		RecoveryResponse rpcRecovery(1: RecoveryParameter recoveryParameter),
 			
-		GetStateResponse rpcGetState(1: int viewNumber, 2: int opNumber, 3: int replicaNumber)
+		GetStateResponse rpcGetState(1: GetStateParameter getStateParameter)
 }
