@@ -250,12 +250,20 @@ public class VRCodeHandler implements  VRCodeService.Iface{
 	public StartViewChangeResponse rpcStartViewChange(
 			StartViewChangeParameter startViewChangeParameter)
 			throws TException {
-		if(startViewChangeParameter.getNewViewNumber() > replicaState.getViewNumber())
+		boolean firstTime = startViewChangeParameter.getNewViewNumber() > replicaState.getViewNumber();
 		while(startViewChangeParameter.getNewViewNumber() > replicaState.getViewNumber()){
 			replicaState.getNextViewNumber();
 		}
+		if(firstTime){
+			replicaState.setStatus(ReplicaStatus.view_change);
+			replicaState.getStartViewChangeRequests().set(replicaState.getReplicaNumber(), true);
+			for(int i=0;i< replicaState.getQouroms().size();i++){
+				if(i == replicaState.getReplicaNumber()){continue;}
+			}
+		}
+		replicaState.getStartViewChangeRequests().set(startViewChangeParameter.getReplicaNumber(), true);
 		
-		return null;
+		return new sta
 	}
 
 	@Override
