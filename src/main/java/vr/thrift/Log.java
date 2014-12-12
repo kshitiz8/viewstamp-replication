@@ -41,7 +41,7 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
   private static final org.apache.thrift.protocol.TField OP_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("opNumber", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField VIEW_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("viewNumber", org.apache.thrift.protocol.TType.I32, (short)2);
   private static final org.apache.thrift.protocol.TField OPERATION_FIELD_DESC = new org.apache.thrift.protocol.TField("operation", org.apache.thrift.protocol.TType.STRING, (short)3);
-  private static final org.apache.thrift.protocol.TField LOG_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("logStatus", org.apache.thrift.protocol.TType.I32, (short)4);
+  private static final org.apache.thrift.protocol.TField LOG_STATUSES_FIELD_DESC = new org.apache.thrift.protocol.TField("logStatuses", org.apache.thrift.protocol.TType.LIST, (short)4);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -52,22 +52,14 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
   public int opNumber; // required
   public int viewNumber; // required
   public String operation; // required
-  /**
-   * 
-   * @see LogStatus
-   */
-  public LogStatus logStatus; // required
+  public List<LogStatus> logStatuses; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     OP_NUMBER((short)1, "opNumber"),
     VIEW_NUMBER((short)2, "viewNumber"),
     OPERATION((short)3, "operation"),
-    /**
-     * 
-     * @see LogStatus
-     */
-    LOG_STATUS((short)4, "logStatus");
+    LOG_STATUSES((short)4, "logStatuses");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -88,8 +80,8 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
           return VIEW_NUMBER;
         case 3: // OPERATION
           return OPERATION;
-        case 4: // LOG_STATUS
-          return LOG_STATUS;
+        case 4: // LOG_STATUSES
+          return LOG_STATUSES;
         default:
           return null;
       }
@@ -142,8 +134,9 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "int")));
     tmpMap.put(_Fields.OPERATION, new org.apache.thrift.meta_data.FieldMetaData("operation", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.LOG_STATUS, new org.apache.thrift.meta_data.FieldMetaData("logStatus", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, LogStatus.class)));
+    tmpMap.put(_Fields.LOG_STATUSES, new org.apache.thrift.meta_data.FieldMetaData("logStatuses", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+            new org.apache.thrift.meta_data.EnumMetaData(org.apache.thrift.protocol.TType.ENUM, LogStatus.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Log.class, metaDataMap);
   }
@@ -155,7 +148,7 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
     int opNumber,
     int viewNumber,
     String operation,
-    LogStatus logStatus)
+    List<LogStatus> logStatuses)
   {
     this();
     this.opNumber = opNumber;
@@ -163,7 +156,7 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
     this.viewNumber = viewNumber;
     setViewNumberIsSet(true);
     this.operation = operation;
-    this.logStatus = logStatus;
+    this.logStatuses = logStatuses;
   }
 
   /**
@@ -176,8 +169,12 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
     if (other.isSetOperation()) {
       this.operation = other.operation;
     }
-    if (other.isSetLogStatus()) {
-      this.logStatus = other.logStatus;
+    if (other.isSetLogStatuses()) {
+      List<LogStatus> __this__logStatuses = new ArrayList<LogStatus>(other.logStatuses.size());
+      for (LogStatus other_element : other.logStatuses) {
+        __this__logStatuses.add(other_element);
+      }
+      this.logStatuses = __this__logStatuses;
     }
   }
 
@@ -192,7 +189,7 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
     setViewNumberIsSet(false);
     this.viewNumber = 0;
     this.operation = null;
-    this.logStatus = null;
+    this.logStatuses = null;
   }
 
   public int getOpNumber() {
@@ -265,35 +262,42 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
     }
   }
 
-  /**
-   * 
-   * @see LogStatus
-   */
-  public LogStatus getLogStatus() {
-    return this.logStatus;
+  public int getLogStatusesSize() {
+    return (this.logStatuses == null) ? 0 : this.logStatuses.size();
   }
 
-  /**
-   * 
-   * @see LogStatus
-   */
-  public Log setLogStatus(LogStatus logStatus) {
-    this.logStatus = logStatus;
+  public java.util.Iterator<LogStatus> getLogStatusesIterator() {
+    return (this.logStatuses == null) ? null : this.logStatuses.iterator();
+  }
+
+  public void addToLogStatuses(LogStatus elem) {
+    if (this.logStatuses == null) {
+      this.logStatuses = new ArrayList<LogStatus>();
+    }
+    this.logStatuses.add(elem);
+  }
+
+  public List<LogStatus> getLogStatuses() {
+    return this.logStatuses;
+  }
+
+  public Log setLogStatuses(List<LogStatus> logStatuses) {
+    this.logStatuses = logStatuses;
     return this;
   }
 
-  public void unsetLogStatus() {
-    this.logStatus = null;
+  public void unsetLogStatuses() {
+    this.logStatuses = null;
   }
 
-  /** Returns true if field logStatus is set (has been assigned a value) and false otherwise */
-  public boolean isSetLogStatus() {
-    return this.logStatus != null;
+  /** Returns true if field logStatuses is set (has been assigned a value) and false otherwise */
+  public boolean isSetLogStatuses() {
+    return this.logStatuses != null;
   }
 
-  public void setLogStatusIsSet(boolean value) {
+  public void setLogStatusesIsSet(boolean value) {
     if (!value) {
-      this.logStatus = null;
+      this.logStatuses = null;
     }
   }
 
@@ -323,11 +327,11 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
       }
       break;
 
-    case LOG_STATUS:
+    case LOG_STATUSES:
       if (value == null) {
-        unsetLogStatus();
+        unsetLogStatuses();
       } else {
-        setLogStatus((LogStatus)value);
+        setLogStatuses((List<LogStatus>)value);
       }
       break;
 
@@ -345,8 +349,8 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
     case OPERATION:
       return getOperation();
 
-    case LOG_STATUS:
-      return getLogStatus();
+    case LOG_STATUSES:
+      return getLogStatuses();
 
     }
     throw new IllegalStateException();
@@ -365,8 +369,8 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
       return isSetViewNumber();
     case OPERATION:
       return isSetOperation();
-    case LOG_STATUS:
-      return isSetLogStatus();
+    case LOG_STATUSES:
+      return isSetLogStatuses();
     }
     throw new IllegalStateException();
   }
@@ -411,12 +415,12 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
         return false;
     }
 
-    boolean this_present_logStatus = true && this.isSetLogStatus();
-    boolean that_present_logStatus = true && that.isSetLogStatus();
-    if (this_present_logStatus || that_present_logStatus) {
-      if (!(this_present_logStatus && that_present_logStatus))
+    boolean this_present_logStatuses = true && this.isSetLogStatuses();
+    boolean that_present_logStatuses = true && that.isSetLogStatuses();
+    if (this_present_logStatuses || that_present_logStatuses) {
+      if (!(this_present_logStatuses && that_present_logStatuses))
         return false;
-      if (!this.logStatus.equals(that.logStatus))
+      if (!this.logStatuses.equals(that.logStatuses))
         return false;
     }
 
@@ -442,10 +446,10 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
     if (present_operation)
       list.add(operation);
 
-    boolean present_logStatus = true && (isSetLogStatus());
-    list.add(present_logStatus);
-    if (present_logStatus)
-      list.add(logStatus.getValue());
+    boolean present_logStatuses = true && (isSetLogStatuses());
+    list.add(present_logStatuses);
+    if (present_logStatuses)
+      list.add(logStatuses);
 
     return list.hashCode();
   }
@@ -488,12 +492,12 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetLogStatus()).compareTo(other.isSetLogStatus());
+    lastComparison = Boolean.valueOf(isSetLogStatuses()).compareTo(other.isSetLogStatuses());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetLogStatus()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.logStatus, other.logStatus);
+    if (isSetLogStatuses()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.logStatuses, other.logStatuses);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -534,11 +538,11 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("logStatus:");
-    if (this.logStatus == null) {
+    sb.append("logStatuses:");
+    if (this.logStatuses == null) {
       sb.append("null");
     } else {
-      sb.append(this.logStatus);
+      sb.append(this.logStatuses);
     }
     first = false;
     sb.append(")");
@@ -610,10 +614,20 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 4: // LOG_STATUS
-            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
-              struct.logStatus = vr.thrift.LogStatus.findByValue(iprot.readI32());
-              struct.setLogStatusIsSet(true);
+          case 4: // LOG_STATUSES
+            if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+              {
+                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+                struct.logStatuses = new ArrayList<LogStatus>(_list0.size);
+                LogStatus _elem1;
+                for (int _i2 = 0; _i2 < _list0.size; ++_i2)
+                {
+                  _elem1 = vr.thrift.LogStatus.findByValue(iprot.readI32());
+                  struct.logStatuses.add(_elem1);
+                }
+                iprot.readListEnd();
+              }
+              struct.setLogStatusesIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -644,9 +658,16 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
         oprot.writeString(struct.operation);
         oprot.writeFieldEnd();
       }
-      if (struct.logStatus != null) {
-        oprot.writeFieldBegin(LOG_STATUS_FIELD_DESC);
-        oprot.writeI32(struct.logStatus.getValue());
+      if (struct.logStatuses != null) {
+        oprot.writeFieldBegin(LOG_STATUSES_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, struct.logStatuses.size()));
+          for (LogStatus _iter3 : struct.logStatuses)
+          {
+            oprot.writeI32(_iter3.getValue());
+          }
+          oprot.writeListEnd();
+        }
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -676,7 +697,7 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
       if (struct.isSetOperation()) {
         optionals.set(2);
       }
-      if (struct.isSetLogStatus()) {
+      if (struct.isSetLogStatuses()) {
         optionals.set(3);
       }
       oprot.writeBitSet(optionals, 4);
@@ -689,8 +710,14 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
       if (struct.isSetOperation()) {
         oprot.writeString(struct.operation);
       }
-      if (struct.isSetLogStatus()) {
-        oprot.writeI32(struct.logStatus.getValue());
+      if (struct.isSetLogStatuses()) {
+        {
+          oprot.writeI32(struct.logStatuses.size());
+          for (LogStatus _iter4 : struct.logStatuses)
+          {
+            oprot.writeI32(_iter4.getValue());
+          }
+        }
       }
     }
 
@@ -711,8 +738,17 @@ public class Log implements org.apache.thrift.TBase<Log, Log._Fields>, java.io.S
         struct.setOperationIsSet(true);
       }
       if (incoming.get(3)) {
-        struct.logStatus = vr.thrift.LogStatus.findByValue(iprot.readI32());
-        struct.setLogStatusIsSet(true);
+        {
+          org.apache.thrift.protocol.TList _list5 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
+          struct.logStatuses = new ArrayList<LogStatus>(_list5.size);
+          LogStatus _elem6;
+          for (int _i7 = 0; _i7 < _list5.size; ++_i7)
+          {
+            _elem6 = vr.thrift.LogStatus.findByValue(iprot.readI32());
+            struct.logStatuses.add(_elem6);
+          }
+        }
+        struct.setLogStatusesIsSet(true);
       }
     }
   }

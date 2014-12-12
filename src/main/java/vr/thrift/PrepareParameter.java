@@ -42,6 +42,8 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
   private static final org.apache.thrift.protocol.TField MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("message", org.apache.thrift.protocol.TType.STRUCT, (short)2);
   private static final org.apache.thrift.protocol.TField OP_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("opNumber", org.apache.thrift.protocol.TType.I32, (short)3);
   private static final org.apache.thrift.protocol.TField COMMIT_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("commitNumber", org.apache.thrift.protocol.TType.I32, (short)4);
+  private static final org.apache.thrift.protocol.TField REPLICA_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("replicaNumber", org.apache.thrift.protocol.TType.I32, (short)5);
+  private static final org.apache.thrift.protocol.TField RETRY_COUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("retryCount", org.apache.thrift.protocol.TType.I32, (short)6);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -53,13 +55,17 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
   public RequestParameter message; // required
   public int opNumber; // required
   public int commitNumber; // required
+  public int replicaNumber; // required
+  public int retryCount; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     VIEW_NUMBER((short)1, "viewNumber"),
     MESSAGE((short)2, "message"),
     OP_NUMBER((short)3, "opNumber"),
-    COMMIT_NUMBER((short)4, "commitNumber");
+    COMMIT_NUMBER((short)4, "commitNumber"),
+    REPLICA_NUMBER((short)5, "replicaNumber"),
+    RETRY_COUNT((short)6, "retryCount");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -82,6 +88,10 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
           return OP_NUMBER;
         case 4: // COMMIT_NUMBER
           return COMMIT_NUMBER;
+        case 5: // REPLICA_NUMBER
+          return REPLICA_NUMBER;
+        case 6: // RETRY_COUNT
+          return RETRY_COUNT;
         default:
           return null;
       }
@@ -125,6 +135,8 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
   private static final int __VIEWNUMBER_ISSET_ID = 0;
   private static final int __OPNUMBER_ISSET_ID = 1;
   private static final int __COMMITNUMBER_ISSET_ID = 2;
+  private static final int __REPLICANUMBER_ISSET_ID = 3;
+  private static final int __RETRYCOUNT_ISSET_ID = 4;
   private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -137,18 +149,26 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "int")));
     tmpMap.put(_Fields.COMMIT_NUMBER, new org.apache.thrift.meta_data.FieldMetaData("commitNumber", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "int")));
+    tmpMap.put(_Fields.REPLICA_NUMBER, new org.apache.thrift.meta_data.FieldMetaData("replicaNumber", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "int")));
+    tmpMap.put(_Fields.RETRY_COUNT, new org.apache.thrift.meta_data.FieldMetaData("retryCount", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "int")));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(PrepareParameter.class, metaDataMap);
   }
 
   public PrepareParameter() {
+    this.retryCount = 0;
+
   }
 
   public PrepareParameter(
     int viewNumber,
     RequestParameter message,
     int opNumber,
-    int commitNumber)
+    int commitNumber,
+    int replicaNumber,
+    int retryCount)
   {
     this();
     this.viewNumber = viewNumber;
@@ -158,6 +178,10 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
     setOpNumberIsSet(true);
     this.commitNumber = commitNumber;
     setCommitNumberIsSet(true);
+    this.replicaNumber = replicaNumber;
+    setReplicaNumberIsSet(true);
+    this.retryCount = retryCount;
+    setRetryCountIsSet(true);
   }
 
   /**
@@ -171,6 +195,8 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
     }
     this.opNumber = other.opNumber;
     this.commitNumber = other.commitNumber;
+    this.replicaNumber = other.replicaNumber;
+    this.retryCount = other.retryCount;
   }
 
   public PrepareParameter deepCopy() {
@@ -186,6 +212,10 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
     this.opNumber = 0;
     setCommitNumberIsSet(false);
     this.commitNumber = 0;
+    setReplicaNumberIsSet(false);
+    this.replicaNumber = 0;
+    this.retryCount = 0;
+
   }
 
   public int getViewNumber() {
@@ -281,6 +311,52 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
     __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __COMMITNUMBER_ISSET_ID, value);
   }
 
+  public int getReplicaNumber() {
+    return this.replicaNumber;
+  }
+
+  public PrepareParameter setReplicaNumber(int replicaNumber) {
+    this.replicaNumber = replicaNumber;
+    setReplicaNumberIsSet(true);
+    return this;
+  }
+
+  public void unsetReplicaNumber() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __REPLICANUMBER_ISSET_ID);
+  }
+
+  /** Returns true if field replicaNumber is set (has been assigned a value) and false otherwise */
+  public boolean isSetReplicaNumber() {
+    return EncodingUtils.testBit(__isset_bitfield, __REPLICANUMBER_ISSET_ID);
+  }
+
+  public void setReplicaNumberIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __REPLICANUMBER_ISSET_ID, value);
+  }
+
+  public int getRetryCount() {
+    return this.retryCount;
+  }
+
+  public PrepareParameter setRetryCount(int retryCount) {
+    this.retryCount = retryCount;
+    setRetryCountIsSet(true);
+    return this;
+  }
+
+  public void unsetRetryCount() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __RETRYCOUNT_ISSET_ID);
+  }
+
+  /** Returns true if field retryCount is set (has been assigned a value) and false otherwise */
+  public boolean isSetRetryCount() {
+    return EncodingUtils.testBit(__isset_bitfield, __RETRYCOUNT_ISSET_ID);
+  }
+
+  public void setRetryCountIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __RETRYCOUNT_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case VIEW_NUMBER:
@@ -315,6 +391,22 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
       }
       break;
 
+    case REPLICA_NUMBER:
+      if (value == null) {
+        unsetReplicaNumber();
+      } else {
+        setReplicaNumber((Integer)value);
+      }
+      break;
+
+    case RETRY_COUNT:
+      if (value == null) {
+        unsetRetryCount();
+      } else {
+        setRetryCount((Integer)value);
+      }
+      break;
+
     }
   }
 
@@ -331,6 +423,12 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
 
     case COMMIT_NUMBER:
       return Integer.valueOf(getCommitNumber());
+
+    case REPLICA_NUMBER:
+      return Integer.valueOf(getReplicaNumber());
+
+    case RETRY_COUNT:
+      return Integer.valueOf(getRetryCount());
 
     }
     throw new IllegalStateException();
@@ -351,6 +449,10 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
       return isSetOpNumber();
     case COMMIT_NUMBER:
       return isSetCommitNumber();
+    case REPLICA_NUMBER:
+      return isSetReplicaNumber();
+    case RETRY_COUNT:
+      return isSetRetryCount();
     }
     throw new IllegalStateException();
   }
@@ -404,6 +506,24 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
         return false;
     }
 
+    boolean this_present_replicaNumber = true;
+    boolean that_present_replicaNumber = true;
+    if (this_present_replicaNumber || that_present_replicaNumber) {
+      if (!(this_present_replicaNumber && that_present_replicaNumber))
+        return false;
+      if (this.replicaNumber != that.replicaNumber)
+        return false;
+    }
+
+    boolean this_present_retryCount = true;
+    boolean that_present_retryCount = true;
+    if (this_present_retryCount || that_present_retryCount) {
+      if (!(this_present_retryCount && that_present_retryCount))
+        return false;
+      if (this.retryCount != that.retryCount)
+        return false;
+    }
+
     return true;
   }
 
@@ -430,6 +550,16 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
     list.add(present_commitNumber);
     if (present_commitNumber)
       list.add(commitNumber);
+
+    boolean present_replicaNumber = true;
+    list.add(present_replicaNumber);
+    if (present_replicaNumber)
+      list.add(replicaNumber);
+
+    boolean present_retryCount = true;
+    list.add(present_retryCount);
+    if (present_retryCount)
+      list.add(retryCount);
 
     return list.hashCode();
   }
@@ -482,6 +612,26 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetReplicaNumber()).compareTo(other.isSetReplicaNumber());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetReplicaNumber()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.replicaNumber, other.replicaNumber);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetRetryCount()).compareTo(other.isSetRetryCount());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetRetryCount()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.retryCount, other.retryCount);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -520,6 +670,14 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
     if (!first) sb.append(", ");
     sb.append("commitNumber:");
     sb.append(this.commitNumber);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("replicaNumber:");
+    sb.append(this.replicaNumber);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("retryCount:");
+    sb.append(this.retryCount);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -602,6 +760,22 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 5: // REPLICA_NUMBER
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.replicaNumber = iprot.readI32();
+              struct.setReplicaNumberIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 6: // RETRY_COUNT
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.retryCount = iprot.readI32();
+              struct.setRetryCountIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -630,6 +804,12 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
       oprot.writeFieldEnd();
       oprot.writeFieldBegin(COMMIT_NUMBER_FIELD_DESC);
       oprot.writeI32(struct.commitNumber);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(REPLICA_NUMBER_FIELD_DESC);
+      oprot.writeI32(struct.replicaNumber);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(RETRY_COUNT_FIELD_DESC);
+      oprot.writeI32(struct.retryCount);
       oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
@@ -661,7 +841,13 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
       if (struct.isSetCommitNumber()) {
         optionals.set(3);
       }
-      oprot.writeBitSet(optionals, 4);
+      if (struct.isSetReplicaNumber()) {
+        optionals.set(4);
+      }
+      if (struct.isSetRetryCount()) {
+        optionals.set(5);
+      }
+      oprot.writeBitSet(optionals, 6);
       if (struct.isSetViewNumber()) {
         oprot.writeI32(struct.viewNumber);
       }
@@ -674,12 +860,18 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
       if (struct.isSetCommitNumber()) {
         oprot.writeI32(struct.commitNumber);
       }
+      if (struct.isSetReplicaNumber()) {
+        oprot.writeI32(struct.replicaNumber);
+      }
+      if (struct.isSetRetryCount()) {
+        oprot.writeI32(struct.retryCount);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, PrepareParameter struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(4);
+      BitSet incoming = iprot.readBitSet(6);
       if (incoming.get(0)) {
         struct.viewNumber = iprot.readI32();
         struct.setViewNumberIsSet(true);
@@ -696,6 +888,14 @@ public class PrepareParameter implements org.apache.thrift.TBase<PrepareParamete
       if (incoming.get(3)) {
         struct.commitNumber = iprot.readI32();
         struct.setCommitNumberIsSet(true);
+      }
+      if (incoming.get(4)) {
+        struct.replicaNumber = iprot.readI32();
+        struct.setReplicaNumberIsSet(true);
+      }
+      if (incoming.get(5)) {
+        struct.retryCount = iprot.readI32();
+        struct.setRetryCountIsSet(true);
       }
     }
   }

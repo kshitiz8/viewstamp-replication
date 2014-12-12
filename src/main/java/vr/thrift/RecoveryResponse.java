@@ -831,14 +831,14 @@ public class RecoveryResponse implements org.apache.thrift.TBase<RecoveryRespons
           case 2: // LOG
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-                struct.log = new ArrayList<Log>(_list0.size);
-                Log _elem1;
-                for (int _i2 = 0; _i2 < _list0.size; ++_i2)
+                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
+                struct.log = new ArrayList<Log>(_list8.size);
+                Log _elem9;
+                for (int _i10 = 0; _i10 < _list8.size; ++_i10)
                 {
-                  _elem1 = new Log();
-                  _elem1.read(iprot);
-                  struct.log.add(_elem1);
+                  _elem9 = new Log();
+                  _elem9.read(iprot);
+                  struct.log.add(_elem9);
                 }
                 iprot.readListEnd();
               }
@@ -909,9 +909,9 @@ public class RecoveryResponse implements org.apache.thrift.TBase<RecoveryRespons
         oprot.writeFieldBegin(LOG_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.log.size()));
-          for (Log _iter3 : struct.log)
+          for (Log _iter11 : struct.log)
           {
-            _iter3.write(oprot);
+            _iter11.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -978,9 +978,9 @@ public class RecoveryResponse implements org.apache.thrift.TBase<RecoveryRespons
       if (struct.isSetLog()) {
         {
           oprot.writeI32(struct.log.size());
-          for (Log _iter4 : struct.log)
+          for (Log _iter12 : struct.log)
           {
-            _iter4.write(oprot);
+            _iter12.write(oprot);
           }
         }
       }
@@ -1011,14 +1011,14 @@ public class RecoveryResponse implements org.apache.thrift.TBase<RecoveryRespons
       }
       if (incoming.get(1)) {
         {
-          org.apache.thrift.protocol.TList _list5 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.log = new ArrayList<Log>(_list5.size);
-          Log _elem6;
-          for (int _i7 = 0; _i7 < _list5.size; ++_i7)
+          org.apache.thrift.protocol.TList _list13 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.log = new ArrayList<Log>(_list13.size);
+          Log _elem14;
+          for (int _i15 = 0; _i15 < _list13.size; ++_i15)
           {
-            _elem6 = new Log();
-            _elem6.read(iprot);
-            struct.log.add(_elem6);
+            _elem14 = new Log();
+            _elem14.read(iprot);
+            struct.log.add(_elem14);
           }
         }
         struct.setLogIsSet(true);

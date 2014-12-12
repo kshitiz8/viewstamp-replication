@@ -5045,14 +5045,14 @@ public class VRCodeService {
             case 2: // LOG
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list16 = iprot.readListBegin();
-                  struct.log = new ArrayList<Log>(_list16.size);
-                  Log _elem17;
-                  for (int _i18 = 0; _i18 < _list16.size; ++_i18)
+                  org.apache.thrift.protocol.TList _list24 = iprot.readListBegin();
+                  struct.log = new ArrayList<Log>(_list24.size);
+                  Log _elem25;
+                  for (int _i26 = 0; _i26 < _list24.size; ++_i26)
                   {
-                    _elem17 = new Log();
-                    _elem17.read(iprot);
-                    struct.log.add(_elem17);
+                    _elem25 = new Log();
+                    _elem25.read(iprot);
+                    struct.log.add(_elem25);
                   }
                   iprot.readListEnd();
                 }
@@ -5123,9 +5123,9 @@ public class VRCodeService {
           oprot.writeFieldBegin(LOG_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.log.size()));
-            for (Log _iter19 : struct.log)
+            for (Log _iter27 : struct.log)
             {
-              _iter19.write(oprot);
+              _iter27.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -5192,9 +5192,9 @@ public class VRCodeService {
         if (struct.isSetLog()) {
           {
             oprot.writeI32(struct.log.size());
-            for (Log _iter20 : struct.log)
+            for (Log _iter28 : struct.log)
             {
-              _iter20.write(oprot);
+              _iter28.write(oprot);
             }
           }
         }
@@ -5225,14 +5225,14 @@ public class VRCodeService {
         }
         if (incoming.get(1)) {
           {
-            org.apache.thrift.protocol.TList _list21 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.log = new ArrayList<Log>(_list21.size);
-            Log _elem22;
-            for (int _i23 = 0; _i23 < _list21.size; ++_i23)
+            org.apache.thrift.protocol.TList _list29 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.log = new ArrayList<Log>(_list29.size);
+            Log _elem30;
+            for (int _i31 = 0; _i31 < _list29.size; ++_i31)
             {
-              _elem22 = new Log();
-              _elem22.read(iprot);
-              struct.log.add(_elem22);
+              _elem30 = new Log();
+              _elem30.read(iprot);
+              struct.log.add(_elem30);
             }
           }
           struct.setLogIsSet(true);
@@ -6268,14 +6268,14 @@ public class VRCodeService {
             case 2: // LOG
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list24 = iprot.readListBegin();
-                  struct.log = new ArrayList<Log>(_list24.size);
-                  Log _elem25;
-                  for (int _i26 = 0; _i26 < _list24.size; ++_i26)
+                  org.apache.thrift.protocol.TList _list32 = iprot.readListBegin();
+                  struct.log = new ArrayList<Log>(_list32.size);
+                  Log _elem33;
+                  for (int _i34 = 0; _i34 < _list32.size; ++_i34)
                   {
-                    _elem25 = new Log();
-                    _elem25.read(iprot);
-                    struct.log.add(_elem25);
+                    _elem33 = new Log();
+                    _elem33.read(iprot);
+                    struct.log.add(_elem33);
                   }
                   iprot.readListEnd();
                 }
@@ -6330,9 +6330,9 @@ public class VRCodeService {
           oprot.writeFieldBegin(LOG_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.log.size()));
-            for (Log _iter27 : struct.log)
+            for (Log _iter35 : struct.log)
             {
-              _iter27.write(oprot);
+              _iter35.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -6387,9 +6387,9 @@ public class VRCodeService {
         if (struct.isSetLog()) {
           {
             oprot.writeI32(struct.log.size());
-            for (Log _iter28 : struct.log)
+            for (Log _iter36 : struct.log)
             {
-              _iter28.write(oprot);
+              _iter36.write(oprot);
             }
           }
         }
@@ -6414,14 +6414,14 @@ public class VRCodeService {
         }
         if (incoming.get(1)) {
           {
-            org.apache.thrift.protocol.TList _list29 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.log = new ArrayList<Log>(_list29.size);
-            Log _elem30;
-            for (int _i31 = 0; _i31 < _list29.size; ++_i31)
+            org.apache.thrift.protocol.TList _list37 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.log = new ArrayList<Log>(_list37.size);
+            Log _elem38;
+            for (int _i39 = 0; _i39 < _list37.size; ++_i39)
             {
-              _elem30 = new Log();
-              _elem30.read(iprot);
-              struct.log.add(_elem30);
+              _elem38 = new Log();
+              _elem38.read(iprot);
+              struct.log.add(_elem38);
             }
           }
           struct.setLogIsSet(true);

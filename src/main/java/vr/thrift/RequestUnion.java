@@ -37,14 +37,16 @@ import org.slf4j.LoggerFactory;
 public class RequestUnion extends org.apache.thrift.TUnion<RequestUnion, RequestUnion._Fields> {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("RequestUnion");
   private static final org.apache.thrift.protocol.TField REQUEST_REDIRECT_FIELD_DESC = new org.apache.thrift.protocol.TField("requestRedirect", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-  private static final org.apache.thrift.protocol.TField REQUEST_SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("requestSuccess", org.apache.thrift.protocol.TType.STRUCT, (short)2);
-  private static final org.apache.thrift.protocol.TField REQUEST_FAILURE_FIELD_DESC = new org.apache.thrift.protocol.TField("requestFailure", org.apache.thrift.protocol.TType.STRUCT, (short)3);
+  private static final org.apache.thrift.protocol.TField REQUEST_ACCEPT_FIELD_DESC = new org.apache.thrift.protocol.TField("requestAccept", org.apache.thrift.protocol.TType.STRUCT, (short)2);
+  private static final org.apache.thrift.protocol.TField REQUEST_SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("requestSuccess", org.apache.thrift.protocol.TType.STRUCT, (short)3);
+  private static final org.apache.thrift.protocol.TField REQUEST_FAILURE_FIELD_DESC = new org.apache.thrift.protocol.TField("requestFailure", org.apache.thrift.protocol.TType.STRUCT, (short)4);
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     REQUEST_REDIRECT((short)1, "requestRedirect"),
-    REQUEST_SUCCESS((short)2, "requestSuccess"),
-    REQUEST_FAILURE((short)3, "requestFailure");
+    REQUEST_ACCEPT((short)2, "requestAccept"),
+    REQUEST_SUCCESS((short)3, "requestSuccess"),
+    REQUEST_FAILURE((short)4, "requestFailure");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -61,9 +63,11 @@ public class RequestUnion extends org.apache.thrift.TUnion<RequestUnion, Request
       switch(fieldId) {
         case 1: // REQUEST_REDIRECT
           return REQUEST_REDIRECT;
-        case 2: // REQUEST_SUCCESS
+        case 2: // REQUEST_ACCEPT
+          return REQUEST_ACCEPT;
+        case 3: // REQUEST_SUCCESS
           return REQUEST_SUCCESS;
-        case 3: // REQUEST_FAILURE
+        case 4: // REQUEST_FAILURE
           return REQUEST_FAILURE;
         default:
           return null;
@@ -109,6 +113,8 @@ public class RequestUnion extends org.apache.thrift.TUnion<RequestUnion, Request
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.REQUEST_REDIRECT, new org.apache.thrift.meta_data.FieldMetaData("requestRedirect", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, RequestRedirect.class)));
+    tmpMap.put(_Fields.REQUEST_ACCEPT, new org.apache.thrift.meta_data.FieldMetaData("requestAccept", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, RequestAccept.class)));
     tmpMap.put(_Fields.REQUEST_SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("requestSuccess", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, RequestSuccess.class)));
     tmpMap.put(_Fields.REQUEST_FAILURE, new org.apache.thrift.meta_data.FieldMetaData("requestFailure", org.apache.thrift.TFieldRequirementType.DEFAULT, 
@@ -138,6 +144,12 @@ public class RequestUnion extends org.apache.thrift.TUnion<RequestUnion, Request
     return x;
   }
 
+  public static RequestUnion requestAccept(RequestAccept value) {
+    RequestUnion x = new RequestUnion();
+    x.setRequestAccept(value);
+    return x;
+  }
+
   public static RequestUnion requestSuccess(RequestSuccess value) {
     RequestUnion x = new RequestUnion();
     x.setRequestSuccess(value);
@@ -159,6 +171,11 @@ public class RequestUnion extends org.apache.thrift.TUnion<RequestUnion, Request
           break;
         }
         throw new ClassCastException("Was expecting value of type RequestRedirect for field 'requestRedirect', but got " + value.getClass().getSimpleName());
+      case REQUEST_ACCEPT:
+        if (value instanceof RequestAccept) {
+          break;
+        }
+        throw new ClassCastException("Was expecting value of type RequestAccept for field 'requestAccept', but got " + value.getClass().getSimpleName());
       case REQUEST_SUCCESS:
         if (value instanceof RequestSuccess) {
           break;
@@ -185,6 +202,16 @@ public class RequestUnion extends org.apache.thrift.TUnion<RequestUnion, Request
             requestRedirect = new RequestRedirect();
             requestRedirect.read(iprot);
             return requestRedirect;
+          } else {
+            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
+            return null;
+          }
+        case REQUEST_ACCEPT:
+          if (field.type == REQUEST_ACCEPT_FIELD_DESC.type) {
+            RequestAccept requestAccept;
+            requestAccept = new RequestAccept();
+            requestAccept.read(iprot);
+            return requestAccept;
           } else {
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, field.type);
             return null;
@@ -225,6 +252,10 @@ public class RequestUnion extends org.apache.thrift.TUnion<RequestUnion, Request
         RequestRedirect requestRedirect = (RequestRedirect)value_;
         requestRedirect.write(oprot);
         return;
+      case REQUEST_ACCEPT:
+        RequestAccept requestAccept = (RequestAccept)value_;
+        requestAccept.write(oprot);
+        return;
       case REQUEST_SUCCESS:
         RequestSuccess requestSuccess = (RequestSuccess)value_;
         requestSuccess.write(oprot);
@@ -248,6 +279,11 @@ public class RequestUnion extends org.apache.thrift.TUnion<RequestUnion, Request
           requestRedirect = new RequestRedirect();
           requestRedirect.read(iprot);
           return requestRedirect;
+        case REQUEST_ACCEPT:
+          RequestAccept requestAccept;
+          requestAccept = new RequestAccept();
+          requestAccept.read(iprot);
+          return requestAccept;
         case REQUEST_SUCCESS:
           RequestSuccess requestSuccess;
           requestSuccess = new RequestSuccess();
@@ -273,6 +309,10 @@ public class RequestUnion extends org.apache.thrift.TUnion<RequestUnion, Request
         RequestRedirect requestRedirect = (RequestRedirect)value_;
         requestRedirect.write(oprot);
         return;
+      case REQUEST_ACCEPT:
+        RequestAccept requestAccept = (RequestAccept)value_;
+        requestAccept.write(oprot);
+        return;
       case REQUEST_SUCCESS:
         RequestSuccess requestSuccess = (RequestSuccess)value_;
         requestSuccess.write(oprot);
@@ -291,6 +331,8 @@ public class RequestUnion extends org.apache.thrift.TUnion<RequestUnion, Request
     switch (setField) {
       case REQUEST_REDIRECT:
         return REQUEST_REDIRECT_FIELD_DESC;
+      case REQUEST_ACCEPT:
+        return REQUEST_ACCEPT_FIELD_DESC;
       case REQUEST_SUCCESS:
         return REQUEST_SUCCESS_FIELD_DESC;
       case REQUEST_FAILURE:
@@ -329,6 +371,20 @@ public class RequestUnion extends org.apache.thrift.TUnion<RequestUnion, Request
     value_ = value;
   }
 
+  public RequestAccept getRequestAccept() {
+    if (getSetField() == _Fields.REQUEST_ACCEPT) {
+      return (RequestAccept)getFieldValue();
+    } else {
+      throw new RuntimeException("Cannot get field 'requestAccept' because union is currently set to " + getFieldDesc(getSetField()).name);
+    }
+  }
+
+  public void setRequestAccept(RequestAccept value) {
+    if (value == null) throw new NullPointerException();
+    setField_ = _Fields.REQUEST_ACCEPT;
+    value_ = value;
+  }
+
   public RequestSuccess getRequestSuccess() {
     if (getSetField() == _Fields.REQUEST_SUCCESS) {
       return (RequestSuccess)getFieldValue();
@@ -359,6 +415,11 @@ public class RequestUnion extends org.apache.thrift.TUnion<RequestUnion, Request
 
   public boolean isSetRequestRedirect() {
     return setField_ == _Fields.REQUEST_REDIRECT;
+  }
+
+
+  public boolean isSetRequestAccept() {
+    return setField_ == _Fields.REQUEST_ACCEPT;
   }
 
 

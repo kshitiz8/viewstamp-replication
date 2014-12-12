@@ -13,8 +13,9 @@ import org.apache.thrift.TEnum;
 
 public enum RequestResponseCode implements org.apache.thrift.TEnum {
   redirected(0),
-  completed(1),
-  failed(2);
+  accepted(1),
+  completed(2),
+  failed(3);
 
   private final int value;
 
@@ -38,8 +39,10 @@ public enum RequestResponseCode implements org.apache.thrift.TEnum {
       case 0:
         return redirected;
       case 1:
-        return completed;
+        return accepted;
       case 2:
+        return completed;
+      case 3:
         return failed;
       default:
         return null;

@@ -1,4 +1,4 @@
-package vr.proxy;
+package vr.proxy.client;
 
 public class VRProxyException extends Exception {
 

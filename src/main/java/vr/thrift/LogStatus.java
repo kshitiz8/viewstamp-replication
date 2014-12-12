@@ -13,7 +13,9 @@ import org.apache.thrift.TEnum;
 
 public enum LogStatus implements org.apache.thrift.TEnum {
   prepare(0),
-  commited(1);
+  prepared(1),
+  failed(2),
+  commited(3);
 
   private final int value;
 
@@ -37,6 +39,10 @@ public enum LogStatus implements org.apache.thrift.TEnum {
       case 0:
         return prepare;
       case 1:
+        return prepared;
+      case 2:
+        return failed;
+      case 3:
         return commited;
       default:
         return null;

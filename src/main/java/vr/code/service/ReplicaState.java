@@ -1,10 +1,13 @@
-package vr.code.vo;
+package vr.code.service;
 
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
-import vr.code.vo.enums.ReplicaStatus;
+import vr.thrift.ClientRequest;
 import vr.thrift.Log;
+import vr.thrift.ReplicaStatus;
 
 
 public class ReplicaState {
@@ -26,10 +29,12 @@ public class ReplicaState {
 	int viewNumber = 0;
 	ReplicaStatus status;
 	int opNumber = 0;
-	List<Log> logs;
+	TreeMap<Integer,Log> logs;
 	int commitNumber;
 	int checkPoint;
 	HashMap<String, ClientRequest > clientTable;
+	ArrayDeque<ClientRequest> requestQueue;
+	
 	
 	
 	public List<String> getQouroms() {
@@ -47,7 +52,7 @@ public class ReplicaState {
 	public int getOpNumber() {
 		return opNumber;
 	}
-	public List<Log> getLogs() {
+	public TreeMap<Integer, Log> getLogs() {
 		return logs;
 	}
 	public int getCommitNumber() {
@@ -59,7 +64,14 @@ public class ReplicaState {
 	public HashMap<String, ClientRequest> getClientTable() {
 		return clientTable;
 	}
-
+	public ArrayDeque<ClientRequest> getRequestQueue() {
+		return requestQueue;
+	}
+	
+	
+	public void setRequestQueue(ArrayDeque<ClientRequest> requestQueue) {
+		this.requestQueue = requestQueue;
+	}
 	public void setQouroms(List<String> qouroms) {
 		this.qouroms = qouroms;
 	}
@@ -75,7 +87,7 @@ public class ReplicaState {
 	public void setClientTable(HashMap<String, ClientRequest> clientTable) {
 		this.clientTable = clientTable;
 	}
-	public void setLogs(List<Log> logs) {
+	public void setLogs(TreeMap<Integer, Log> logs) {
 		this.logs = logs;
 	}
 	public void setViewNumber(int viewNumber) {

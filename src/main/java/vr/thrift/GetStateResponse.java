@@ -675,14 +675,14 @@ public class GetStateResponse implements org.apache.thrift.TBase<GetStateRespons
           case 2: // LOG
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
-                struct.log = new ArrayList<Log>(_list8.size);
-                Log _elem9;
-                for (int _i10 = 0; _i10 < _list8.size; ++_i10)
+                org.apache.thrift.protocol.TList _list16 = iprot.readListBegin();
+                struct.log = new ArrayList<Log>(_list16.size);
+                Log _elem17;
+                for (int _i18 = 0; _i18 < _list16.size; ++_i18)
                 {
-                  _elem9 = new Log();
-                  _elem9.read(iprot);
-                  struct.log.add(_elem9);
+                  _elem17 = new Log();
+                  _elem17.read(iprot);
+                  struct.log.add(_elem17);
                 }
                 iprot.readListEnd();
               }
@@ -737,9 +737,9 @@ public class GetStateResponse implements org.apache.thrift.TBase<GetStateRespons
         oprot.writeFieldBegin(LOG_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.log.size()));
-          for (Log _iter11 : struct.log)
+          for (Log _iter19 : struct.log)
           {
-            _iter11.write(oprot);
+            _iter19.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -794,9 +794,9 @@ public class GetStateResponse implements org.apache.thrift.TBase<GetStateRespons
       if (struct.isSetLog()) {
         {
           oprot.writeI32(struct.log.size());
-          for (Log _iter12 : struct.log)
+          for (Log _iter20 : struct.log)
           {
-            _iter12.write(oprot);
+            _iter20.write(oprot);
           }
         }
       }
@@ -821,14 +821,14 @@ public class GetStateResponse implements org.apache.thrift.TBase<GetStateRespons
       }
       if (incoming.get(1)) {
         {
-          org.apache.thrift.protocol.TList _list13 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.log = new ArrayList<Log>(_list13.size);
-          Log _elem14;
-          for (int _i15 = 0; _i15 < _list13.size; ++_i15)
+          org.apache.thrift.protocol.TList _list21 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.log = new ArrayList<Log>(_list21.size);
+          Log _elem22;
+          for (int _i23 = 0; _i23 < _list21.size; ++_i23)
           {
-            _elem14 = new Log();
-            _elem14.read(iprot);
-            struct.log.add(_elem14);
+            _elem22 = new Log();
+            _elem22.read(iprot);
+            struct.log.add(_elem22);
           }
         }
         struct.setLogIsSet(true);

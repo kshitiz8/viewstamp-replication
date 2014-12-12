@@ -2,25 +2,49 @@ namespace java vr.thrift
 typedef i64 long
 typedef i32 int
 
+
 enum LogStatus{
 	prepare, 
+	prepared,
+	failed,
 	commited
 }
+
+enum ReplicaStatus{
+	normal,
+	view_change,
+	recovering
+}
+
 struct Log{
 	1: int opNumber;
 	2: int viewNumber;
 	3: string operation;
-	4: LogStatus logStatus;	
+	4: list<LogStatus> logStatuses;	
 }
+
+
+
+struct ClientRequest{
+	1: RequestParameter requestParameter;
+    2: int viewNumber;
+    3: RequestResponseCode requestResponseCode;
+    4: string output;
+} 
+
 
 enum RequestResponseCode {
 	redirected,
+	accepted,
     completed,
     failed 
 }  
 
 struct RequestRedirect{
 	1: int primaryReplica; 
+}
+struct RequestAccept{
+	1: string responseString;
 }
 
 struct RequestSuccess{
@@ -34,8 +58,9 @@ struct RequestFailure{
 
 union RequestUnion{
 	1: RequestRedirect requestRedirect;
-	2: RequestSuccess requestSuccess;
-	3: RequestFailure requestFailure;
+	2: RequestAccept requestAccept;
+	3: RequestSuccess requestSuccess;
+	4: RequestFailure requestFailure;
 }
 /* ---------------- Service Parameters and return objects-----------------
 * RPC Reqest
@@ -44,6 +69,7 @@ struct RequestParameter{
 	1: string operation; 
     2: string clientId; 
     3: long requestNumber;
+    4: int retryCount = 0;
 }
 struct RequestResponse {
 	1: int viewNumber;
@@ -59,6 +85,8 @@ struct PrepareParameter{
 	2: RequestParameter message; 
 	3: int opNumber;
 	4: int commitNumber;
+	5: int replicaNumber;
+	6: int retryCount= 0;
 }
 struct PrepareResponse{
 	1: bool prepareOk;
@@ -70,6 +98,7 @@ struct PrepareResponse{
 struct CommitParameter{
 	1: int viewNumber; 
 	2: int commitNumber;
+	3: int retryCount = 0;
 }
 struct CommitResponse{
 	1: bool commitOk;

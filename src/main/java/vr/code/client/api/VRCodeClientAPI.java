@@ -12,8 +12,8 @@ import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import vr.code.service.ReplicaState;
 import vr.code.service.VRCodeServer;
-import vr.code.vo.ReplicaState;
 import vr.thrift.CommitParameter;
 import vr.thrift.Log;
 import vr.thrift.PrepareParameter;
@@ -41,7 +41,7 @@ public class VRCodeClientAPI {
 		return Integer.parseInt(replicaState.getQouroms().get(replicaNumber).split(":")[1]);
 	}
 	
-	private VRCodeService.AsyncClient getAsyncClient(int targetReplicaNumber, int timeout) throws IOException{
+	private static VRCodeService.AsyncClient getAsyncClient(int targetReplicaNumber, int timeout) throws IOException{
 			VRCodeService.AsyncClient client  = new VRCodeService.AsyncClient(
 					new TBinaryProtocol.Factory(), 
 					new TAsyncClientManager(),
@@ -51,24 +51,7 @@ public class VRCodeClientAPI {
 			return client;
 	}
 	
-	public void callRequest( int targetReplicaNumber, 
-			int timeout,
-			RequestParameter requestParameter, 
-			AsyncMethodCallback<rpcRequest_call> resultHandler){
-		try {
-			LOGGER.info("Client API: calling RPC request");
-			VRCodeService.AsyncClient client = getAsyncClient(targetReplicaNumber, timeout);
-			client.rpcRequest(requestParameter,resultHandler);
-		}catch (TTransportException e) {
-			LOGGER.error("error",e);
-        } catch (TException e) {
-        	LOGGER.error("error",e);
-        } catch (IOException e) {
-            LOGGER.error("error",e);
-        }
-	}
-	
-	public void callPrepare(int targetReplicaNumber, 
+	public static void callPrepare(int targetReplicaNumber, 
 							int timeout,
 							PrepareParameter prepareParameter, 
 							AsyncMethodCallback<rpcPrepare_call> resultHandler){
@@ -85,7 +68,7 @@ public class VRCodeClientAPI {
         }
 	}
 	
-	public void callCommit(int targetReplicaNumber, int timeout,CommitParameter commitParameter, 
+	public static void callCommit(int targetReplicaNumber, int timeout,CommitParameter commitParameter, 
 			AsyncMethodCallback<rpcCommit_call> resultHandler){
 		try {
 			LOGGER.info("Client API: calling RPC Commit");
@@ -100,7 +83,7 @@ public class VRCodeClientAPI {
         }
 	}
 	
-	public void callStartViewChange(int targetReplicaNumber, int timeout, int newViewNumber,
+	public static void callStartViewChange(int targetReplicaNumber, int timeout, int newViewNumber,
 			int replicaNumber, AsyncMethodCallback<rpcStartViewChange_call> resultHandler){
 		try {
 			LOGGER.info("Client API: calling RPC StartViewChange");
@@ -115,7 +98,7 @@ public class VRCodeClientAPI {
         }
 	}
 	
-	public void callDoViewChange(int targetReplicaNumber, int timeout, int newViewNumber,
+	public static  void callDoViewChange(int targetReplicaNumber, int timeout, int newViewNumber,
 			List<Log> log, int oldViewNumber, int checkPoint, int opNumber,
 			int commitNumber, int replicaNumber, AsyncMethodCallback<rpcDoViewChange_call> resultHandler){
 		try {
@@ -132,7 +115,7 @@ public class VRCodeClientAPI {
         }
 	}
 	
-	public void callStartView(int targetReplicaNumber, int timeout,int viewNo, List<Log> log,
+	public static void callStartView(int targetReplicaNumber, int timeout,int viewNo, List<Log> log,
 			int checkPoint, int opNumber, int commitNumber, AsyncMethodCallback<rpcStartView_call> resultHandler){
 		try {
 			LOGGER.info("Client API: calling RPC StartView");
@@ -148,7 +131,7 @@ public class VRCodeClientAPI {
         }
 	}
 	
-	public void callRecovery(int targetReplicaNumber, int timeout, int replicaNumber, byte nonce, 
+	public static void callRecovery(int targetReplicaNumber, int timeout, int replicaNumber, byte nonce, 
 			AsyncMethodCallback<rpcRecovery_call> resultHandler){
 		try {
 			LOGGER.info("Client API: calling RPC Recovery");
@@ -164,7 +147,7 @@ public class VRCodeClientAPI {
         }
 	}
 	
-	public void callGetState(int targetReplicaNumber, int timeout, int viewNumber, int opNumber,
+	public static void callGetState(int targetReplicaNumber, int timeout, int viewNumber, int opNumber,
 			int replicaNumber, AsyncMethodCallback<rpcGetState_call> resultHandler){
 		try {
 			LOGGER.info("Client API: calling RPC GetState");
@@ -185,8 +168,8 @@ public class VRCodeClientAPI {
 		
 		VRCodeClientAPI client = new VRCodeClientAPI();
 		VRCodeCallbacks callbacks = new VRCodeCallbacks();
-		PrepareParameter prepareParameter = new PrepareParameter(0,new RequestParameter("delete a", "1",1), 1,1);
-		client.callPrepare(0,300,prepareParameter, callbacks.prepareCallback(prepareParameter));
+		//PrepareParameter prepareParameter = new PrepareParameter(0,new RequestParameter("delete a", "1",1), 1,1,1,0);
+		//client.callPrepare(0,300,prepareParameter, callbacks.prepareCallback(prepareParameter));
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {

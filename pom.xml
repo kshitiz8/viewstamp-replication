@@ -14,5 +14,10 @@
   		<artifactId>slf4j-log4j12</artifactId>
   		<version>1.7.5</version>
   	</dependency>
+<!--   	<dependency> -->
+<!-- 	<groupId>org.apache.thrift</groupId> -->
+<!-- 	<artifactId>libthrift</artifactId> -->
+<!-- 	<version>0.9.1</version> -->
+<!-- 	</dependency> -->
   </dependencies>
 </project> 
