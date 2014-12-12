@@ -19,40 +19,46 @@ public class VRProxyCallbacks {
 
 	public static AsyncMethodCallback<VRCodeService.AsyncClient.rpcRequest_call> 
 	prepareCallback(final RequestParameter requestParameter){
+		
 		return new AsyncMethodCallback<VRCodeService.AsyncClient.rpcRequest_call>() {
-
+			public int getReplicaNumber(){
+				return requestParameter.getReplicaNumber();
+			}
 			@Override
 			public void onError(Exception arg0) {
+				LOGGER.info(requestParameter.toString());
 				if(requestParameter.getRetryCount() >= VRProxy.REQUEST_RETRY_COUNT){
-					LOGGER.error("Request failed after max retries",arg0);
-					LOGGER.error("Making proxy idle again");
+					LOGGER.error(getReplicaNumber()+"-Replica - RPCRequest - Max retry Count Reached",arg0);					
 					pConf.setIdle(true);
 				}else{
-					LOGGER.info("Request failed, lets try with another replica",arg0);
+					LOGGER.error(getReplicaNumber()+"-Replica - RPCRequest - Failed, trying a different replica",arg0);
 					int retry = requestParameter.getRetryCount() + 1;
+					int newTargetReplica = (pConf.getPrimaryReplica()+retry)%pConf.getQouroms().size();
 					requestParameter.setRetryCount(retry);
-					VRProxy.callRequest(
-							(pConf.getPrimaryReplica()+retry)%pConf.getQouroms().size(), 
-							VRProxy.REQUEST_TIMEOUT, 
-							requestParameter, 
-							VRProxyCallbacks.prepareCallback(requestParameter)
-							);
+					requestParameter.setReplicaNumber(newTargetReplica);
+					VRProxy.callRequest(newTargetReplica,
+								VRProxy.REQUEST_TIMEOUT, 
+								requestParameter, 
+								VRProxyCallbacks.prepareCallback(requestParameter)
+								);
 				}
 			}
 
 			@Override
 			public void onComplete(rpcRequest_call arg0) {
 				try {
+					
 					RequestResponse requestResponse = (RequestResponse)arg0.getResult();
+					LOGGER.info(requestResponse.toString());
+					LOGGER.info(requestResponse.toString());
+					
 					if(requestResponse.getRequestResponseCode() == RequestResponseCode.accepted){
 						if(requestParameter.getRetryCount() >= VRProxy.REQUEST_RETRY_COUNT){
-							LOGGER.error("Request failed after max retries in accepted state");
-							LOGGER.error("Making proxy idle again");
+							LOGGER.error(getReplicaNumber()+"-Replica - RPCRequest - Request failed after max retries in accepted state");
 							pConf.setIdle(true);
 							return;
 						}
 						LOGGER.info(requestResponse.getRequestUnion().getRequestAccept().getResponseString());
-						LOGGER.info("Wait before retrying...");
 						try {
 							Thread.sleep(VRProxy.REQUEST_WAIT);
 						} catch (InterruptedException e) {
@@ -81,8 +87,9 @@ public class VRProxyCallbacks {
 						LOGGER.info("Operation Failed "+requestResponse.getRequestUnion().getRequestFailure().getResponseString());
 						LOGGER.error("Making proxy idle again");
 						pConf.setIdle(true);
-					}else if(requestResponse.getRequestResponseCode() == RequestResponseCode.failed){
-						LOGGER.info("OPeration Success. Output = "+requestResponse.getRequestUnion().getRequestSuccess().getResponseString());
+					}else if(requestResponse.getRequestResponseCode() == RequestResponseCode.completed){
+						System.out.println("Operation: "+requestParameter.getOperation()+" --> Output = "+requestResponse.getRequestUnion().getRequestSuccess().getResponseString());
+						System.out.print("quit to exit>");
 						LOGGER.error("Making proxy idle again");
 						pConf.setIdle(true);
 					}

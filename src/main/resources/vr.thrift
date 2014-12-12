@@ -70,6 +70,7 @@ struct RequestParameter{
     2: string clientId; 
     3: long requestNumber;
     4: int retryCount = 0;
+    5: int replicaNumber;
 }
 struct RequestResponse {
 	1: int viewNumber;

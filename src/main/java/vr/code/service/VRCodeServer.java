@@ -37,7 +37,7 @@ public class VRCodeServer {
 
 	public static void main(String [] args) {
 
-		beforeStart();
+		beforeStart(args[0]);
 
 		final int port = Integer.parseInt(replicaState.getCurrentReplicaAddress().split(":")[1]);
 
@@ -62,7 +62,7 @@ public class VRCodeServer {
 			(new Thread() {
 				public void run() {
 					if(replicaState.getReplicaNumber() == replicaState.getPrimaryReplica()){
-						processRequestQueue();
+						requestPoller();
 					}
 				}
 			}).start();
@@ -71,7 +71,7 @@ public class VRCodeServer {
 			e.printStackTrace();
 		}
 	}
-	public static void processRequestQueue(){
+	public static void requestPoller(){
 		LOGGER.info("Inside processRequestQueue");
 		ClientRequest currentRequest = null;
 		while(true){
@@ -82,7 +82,7 @@ public class VRCodeServer {
 				e.printStackTrace();
 			}
 
-			LOGGER.info("Awake");
+			//LOGGER.info("Awake");
 
 			if(currentRequest != null){
 				LOGGER.info("");
@@ -94,7 +94,7 @@ public class VRCodeServer {
 					}
 				}
 
-				if(vote > (int)replicaState.getQouroms().size()/2 + 1){
+				if(vote > replicaState.majoity()){
 					LOGGER.info("Majority Condition reached :)");
 					replicaState.getLogs().
 					get(replicaState.getOpNumber()).
@@ -107,10 +107,11 @@ public class VRCodeServer {
 					currentRequest = null;
 					replicaState.setCommitNumber(replicaState.getOpNumber());
 				}
-			}else{
-				LOGGER.info("No existing request, lets find a new one");
+			}
+			else{
+				//LOGGER.info("No existing request, lets find a new one");
 				if(!(replicaState.getRequestQueue() != null && replicaState.getRequestQueue().size()>0)){
-					LOGGER.info("No new  request either, lets sleep for a while");
+					//LOGGER.info("No new  request either, lets sleep for a while");
 					continue;
 				}
 				ClientRequest nextRequest = replicaState.getRequestQueue().pop();
@@ -130,7 +131,8 @@ public class VRCodeServer {
 				log.setOpNumber(opNumber);
 				log.setViewNumber(replicaState.getViewNumber());
 				replicaState.getLogs().put(opNumber, log);
-
+				LOGGER.info("Calling Prepare to all other replica");
+				LOGGER.info(log.toString());
 				for(int i=0; i< replicaState.getQouroms().size(); i++){
 					if(i == replicaState.getReplicaNumber()){
 						continue;
@@ -151,7 +153,7 @@ public class VRCodeServer {
 		}
 	}
 
-	public static void beforeStart(){
+	public static void beforeStart(String args){
 		FileInputStream input = null;
 		Properties prop = new Properties();
 		try {
@@ -170,22 +172,19 @@ public class VRCodeServer {
 		}
 		int i = 0;
 		ArrayList<String> qouroms  = new ArrayList<String>();
-		System.out.println("please select a server to start. Type 1,2,3...");
+///		System.out.println("please select a server to start. Type 0,1,2,3...");
 		for(String server : prop.getProperty("server.names").split(",")){
 			String address =prop.getProperty(server); 
-			System.out.println("[ "+ i++ +" ] -\t" +server + " \t"+address);
+			System.out.println(i++ + ") "+server + " \t"+address);
 			qouroms.add(address);
+			
 
 		}
 		replicaState = ReplicaState.getInstance();
 		replicaState.setStatus(ReplicaStatus.recovering);
 		replicaState.setQouroms(qouroms);
-		Scanner s = new Scanner(System.in);
-		int choice = s.nextInt();
-		if(choice <0 || choice >= qouroms.size()){
-			return;
-		}
-		replicaState.setReplicaNumber(choice);
+		
+		replicaState.setReplicaNumber(Integer.parseInt(args));
 		replicaState.setClientTable(new HashMap<String, ClientRequest>());
 		replicaState.setRequestQueue(new ArrayDeque<ClientRequest>());
 		replicaState.setLogs(new TreeMap<Integer,Log>());

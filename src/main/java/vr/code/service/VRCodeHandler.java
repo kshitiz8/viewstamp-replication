@@ -1,6 +1,7 @@
 package vr.code.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.thrift.TException;
@@ -13,6 +14,7 @@ import vr.thrift.CommitResponse;
 import vr.thrift.DoViewChangeResponse;
 import vr.thrift.GetStateResponse;
 import vr.thrift.Log;
+import vr.thrift.LogStatus;
 import vr.thrift.PrepareParameter;
 import vr.thrift.PrepareResponse;
 import vr.thrift.RecoveryResponse;
@@ -38,7 +40,6 @@ public class VRCodeHandler implements  VRCodeService.Iface{
 	@Override
 	public RequestResponse rpcRequest(RequestParameter requestParameter)
 			throws TException {
-		
 		String operation = requestParameter.getOperation();
 		String clientId = requestParameter.getClientId();
 		long requestNumber = requestParameter.getRequestNumber();
@@ -147,6 +148,8 @@ public class VRCodeHandler implements  VRCodeService.Iface{
 		RequestParameter message = prepareParameter.getMessage();
 		int opNumber = prepareParameter.getOpNumber();
 		int commitNumber = prepareParameter.getCommitNumber();
+		
+		LOGGER.info("Prepare call for OP Number:"+opNumber);
 		/*
 		 * if view number from is less than view number  
 		 */
@@ -155,7 +158,35 @@ public class VRCodeHandler implements  VRCodeService.Iface{
 			response.setPrepareOk(false);
 			return response;
 		}else if(viewNumber == replicaState.getViewNumber()){
-//			if(opNumber == )
+			if(opNumber == replicaState.getOpNumber() + 1){
+				ArrayList<LogStatus> logStatuses = new ArrayList<LogStatus>();
+				for(int i=0; i< replicaState.getQouroms().size(); i++){
+					if(i == replicaState.getReplicaNumber() || i == replicaState.getPrimaryReplica())
+						logStatuses.add(LogStatus.prepared);
+					else{
+						logStatuses.add(LogStatus.prepare);
+					}
+				}
+				Log log =  new Log();
+				log.setLogStatuses(logStatuses );
+				log.setOperation(message.getOperation());
+				log.setOpNumber(opNumber);
+				log.setViewNumber(replicaState.getViewNumber());
+				replicaState.getLogs().put(opNumber, log);
+				replicaState.setOpNumber(opNumber);
+				response.setPrepareOk(true);
+			}else if(opNumber > replicaState.getOpNumber() + 1 ){
+				LOGGER.info("handle...get previous logs");
+				response.setPrepareOk(false);
+			}
+			
+			if(commitNumber <= replicaState.getOpNumber()){
+				replicaState.setCommitNumber(commitNumber);
+				response.setCommitOk(true);
+			}else{
+				response.setCommitOk(false);
+			}
+			return response;
 		}
 		
 		

@@ -21,15 +21,14 @@ public class VRProxy {
 	private static final Logger LOGGER = LoggerFactory.getLogger(VRProxy.class);
 	public static int REQUEST_TIMEOUT = 500;
 	public static int REQUEST_WAIT = 100;
-	public static int REQUEST_RETRY_COUNT = 3;
+	public static int REQUEST_RETRY_COUNT = 15;
 
 	private static ProxyConfiguration pConf = ProxyConfiguration.getInstance();			
+	
 
-
-	public void init(){
+	public VRProxy() {
+		
 		ArrayList<String> qouroms = new ArrayList<String>();
-		//read the qourom info and other info from config file
-
 
 		FileInputStream input = null;
 		Properties prop = new Properties();
@@ -73,6 +72,7 @@ public class VRProxy {
 			requestParameter.setClientId(pConf.getProxyId());
 			requestParameter.setOperation(operation);
 			requestParameter.setRequestNumber(pConf.getRequestNumber());
+			requestParameter.setReplicaNumber(pConf.getPrimaryReplica());
 			callRequest(pConf.getPrimaryReplica(), REQUEST_TIMEOUT, requestParameter,VRProxyCallbacks.prepareCallback(requestParameter));
 		}else {
 			throw new VRProxyException("Proxy in use");
@@ -119,9 +119,8 @@ public class VRProxy {
 
 	public static void main(String [] args) {
 		VRProxy proxy = new VRProxy();
-		proxy.init();
 		try {
-			proxy.execute("create a");
+			proxy.execute("create b");
 		} catch (VRProxyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

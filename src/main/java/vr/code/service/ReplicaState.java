@@ -30,7 +30,7 @@ public class ReplicaState {
 	ReplicaStatus status;
 	int opNumber = 0;
 	TreeMap<Integer,Log> logs;
-	int commitNumber;
+	int commitNumber = -1;
 	int checkPoint;
 	HashMap<String, ClientRequest > clientTable;
 	ArrayDeque<ClientRequest> requestQueue;
@@ -115,6 +115,10 @@ public class ReplicaState {
 	}
 	public boolean isPrimaryReplica(){
 		return getPrimaryReplica() == replicaNumber;
+	}
+	
+	public int majoity(){
+		return (int)getQouroms().size()/2 + 1;
 	}
 	
 }

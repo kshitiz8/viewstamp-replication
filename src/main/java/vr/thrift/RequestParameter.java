@@ -42,6 +42,7 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
   private static final org.apache.thrift.protocol.TField CLIENT_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("clientId", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField REQUEST_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("requestNumber", org.apache.thrift.protocol.TType.I64, (short)3);
   private static final org.apache.thrift.protocol.TField RETRY_COUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("retryCount", org.apache.thrift.protocol.TType.I32, (short)4);
+  private static final org.apache.thrift.protocol.TField REPLICA_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("replicaNumber", org.apache.thrift.protocol.TType.I32, (short)5);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -53,13 +54,15 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
   public String clientId; // required
   public long requestNumber; // required
   public int retryCount; // required
+  public int replicaNumber; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     OPERATION((short)1, "operation"),
     CLIENT_ID((short)2, "clientId"),
     REQUEST_NUMBER((short)3, "requestNumber"),
-    RETRY_COUNT((short)4, "retryCount");
+    RETRY_COUNT((short)4, "retryCount"),
+    REPLICA_NUMBER((short)5, "replicaNumber");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -82,6 +85,8 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
           return REQUEST_NUMBER;
         case 4: // RETRY_COUNT
           return RETRY_COUNT;
+        case 5: // REPLICA_NUMBER
+          return REPLICA_NUMBER;
         default:
           return null;
       }
@@ -124,6 +129,7 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
   // isset id assignments
   private static final int __REQUESTNUMBER_ISSET_ID = 0;
   private static final int __RETRYCOUNT_ISSET_ID = 1;
+  private static final int __REPLICANUMBER_ISSET_ID = 2;
   private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -135,6 +141,8 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
     tmpMap.put(_Fields.REQUEST_NUMBER, new org.apache.thrift.meta_data.FieldMetaData("requestNumber", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64        , "long")));
     tmpMap.put(_Fields.RETRY_COUNT, new org.apache.thrift.meta_data.FieldMetaData("retryCount", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "int")));
+    tmpMap.put(_Fields.REPLICA_NUMBER, new org.apache.thrift.meta_data.FieldMetaData("replicaNumber", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "int")));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(RequestParameter.class, metaDataMap);
@@ -149,7 +157,8 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
     String operation,
     String clientId,
     long requestNumber,
-    int retryCount)
+    int retryCount,
+    int replicaNumber)
   {
     this();
     this.operation = operation;
@@ -158,6 +167,8 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
     setRequestNumberIsSet(true);
     this.retryCount = retryCount;
     setRetryCountIsSet(true);
+    this.replicaNumber = replicaNumber;
+    setReplicaNumberIsSet(true);
   }
 
   /**
@@ -173,6 +184,7 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
     }
     this.requestNumber = other.requestNumber;
     this.retryCount = other.retryCount;
+    this.replicaNumber = other.replicaNumber;
   }
 
   public RequestParameter deepCopy() {
@@ -187,6 +199,8 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
     this.requestNumber = 0;
     this.retryCount = 0;
 
+    setReplicaNumberIsSet(false);
+    this.replicaNumber = 0;
   }
 
   public String getOperation() {
@@ -283,6 +297,29 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
     __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __RETRYCOUNT_ISSET_ID, value);
   }
 
+  public int getReplicaNumber() {
+    return this.replicaNumber;
+  }
+
+  public RequestParameter setReplicaNumber(int replicaNumber) {
+    this.replicaNumber = replicaNumber;
+    setReplicaNumberIsSet(true);
+    return this;
+  }
+
+  public void unsetReplicaNumber() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __REPLICANUMBER_ISSET_ID);
+  }
+
+  /** Returns true if field replicaNumber is set (has been assigned a value) and false otherwise */
+  public boolean isSetReplicaNumber() {
+    return EncodingUtils.testBit(__isset_bitfield, __REPLICANUMBER_ISSET_ID);
+  }
+
+  public void setReplicaNumberIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __REPLICANUMBER_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case OPERATION:
@@ -317,6 +354,14 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
       }
       break;
 
+    case REPLICA_NUMBER:
+      if (value == null) {
+        unsetReplicaNumber();
+      } else {
+        setReplicaNumber((Integer)value);
+      }
+      break;
+
     }
   }
 
@@ -333,6 +378,9 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
 
     case RETRY_COUNT:
       return Integer.valueOf(getRetryCount());
+
+    case REPLICA_NUMBER:
+      return Integer.valueOf(getReplicaNumber());
 
     }
     throw new IllegalStateException();
@@ -353,6 +401,8 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
       return isSetRequestNumber();
     case RETRY_COUNT:
       return isSetRetryCount();
+    case REPLICA_NUMBER:
+      return isSetReplicaNumber();
     }
     throw new IllegalStateException();
   }
@@ -406,6 +456,15 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
         return false;
     }
 
+    boolean this_present_replicaNumber = true;
+    boolean that_present_replicaNumber = true;
+    if (this_present_replicaNumber || that_present_replicaNumber) {
+      if (!(this_present_replicaNumber && that_present_replicaNumber))
+        return false;
+      if (this.replicaNumber != that.replicaNumber)
+        return false;
+    }
+
     return true;
   }
 
@@ -432,6 +491,11 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
     list.add(present_retryCount);
     if (present_retryCount)
       list.add(retryCount);
+
+    boolean present_replicaNumber = true;
+    list.add(present_replicaNumber);
+    if (present_replicaNumber)
+      list.add(replicaNumber);
 
     return list.hashCode();
   }
@@ -484,6 +548,16 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetReplicaNumber()).compareTo(other.isSetReplicaNumber());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetReplicaNumber()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.replicaNumber, other.replicaNumber);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -526,6 +600,10 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
     if (!first) sb.append(", ");
     sb.append("retryCount:");
     sb.append(this.retryCount);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("replicaNumber:");
+    sb.append(this.replicaNumber);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -604,6 +682,14 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 5: // REPLICA_NUMBER
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.replicaNumber = iprot.readI32();
+              struct.setReplicaNumberIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -635,6 +721,9 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
       oprot.writeFieldBegin(RETRY_COUNT_FIELD_DESC);
       oprot.writeI32(struct.retryCount);
       oprot.writeFieldEnd();
+      oprot.writeFieldBegin(REPLICA_NUMBER_FIELD_DESC);
+      oprot.writeI32(struct.replicaNumber);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -665,7 +754,10 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
       if (struct.isSetRetryCount()) {
         optionals.set(3);
       }
-      oprot.writeBitSet(optionals, 4);
+      if (struct.isSetReplicaNumber()) {
+        optionals.set(4);
+      }
+      oprot.writeBitSet(optionals, 5);
       if (struct.isSetOperation()) {
         oprot.writeString(struct.operation);
       }
@@ -678,12 +770,15 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
       if (struct.isSetRetryCount()) {
         oprot.writeI32(struct.retryCount);
       }
+      if (struct.isSetReplicaNumber()) {
+        oprot.writeI32(struct.replicaNumber);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, RequestParameter struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(4);
+      BitSet incoming = iprot.readBitSet(5);
       if (incoming.get(0)) {
         struct.operation = iprot.readString();
         struct.setOperationIsSet(true);
@@ -699,6 +794,10 @@ public class RequestParameter implements org.apache.thrift.TBase<RequestParamete
       if (incoming.get(3)) {
         struct.retryCount = iprot.readI32();
         struct.setRetryCountIsSet(true);
+      }
+      if (incoming.get(4)) {
+        struct.replicaNumber = iprot.readI32();
+        struct.setReplicaNumberIsSet(true);
       }
     }
   }
