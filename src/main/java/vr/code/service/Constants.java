@@ -5,7 +5,7 @@ public class Constants {
 	
 	//Timeouts
 	public static int POLL_TIMEOUT = 10;
-	public static int VIEW_CHANGE_TIMEOUT = 500;
+	public static int VIEW_CHANGE_TIMEOUT = 1500;
 	public static int VIEW_CHANGE_TIMEOUT1 = 5000;
 	
 	

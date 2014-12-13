@@ -15,7 +15,11 @@ enum ReplicaStatus{
 	view_change,
 	recovering
 }
-
+enum ViewChangePhase{
+	startViewChange,
+	doViewChange,
+	startView,
+}
 struct Log{
 	1: int opNumber;
 	2: int viewNumber;
@@ -128,10 +132,6 @@ struct DoViewChangeParameter{
 	8: int retryCount =0;
 }
 struct DoViewChangeResponse{
-	1: int replicaNumber; 
-	2: int newViewNumber;
-	3: bool success; 
-
 }
 
 /*
@@ -147,9 +147,6 @@ struct StartViewParameter{
 	7: int retryCount =0;
 }
 struct StartViewResponse{
-	1: int replicaNumber;
-	2: int newViewNumber;
-	3: bool success; 
 }
 /*
 * RPC Recovery
@@ -200,5 +197,7 @@ service VRCodeService{
 		
   		RecoveryResponse rpcRecovery(1: RecoveryParameter recoveryParameter),
 			
-		GetStateResponse rpcGetState(1: GetStateParameter getStateParameter)
+		GetStateResponse rpcGetState(1: GetStateParameter getStateParameter),
+		
+		bool ping()
 }

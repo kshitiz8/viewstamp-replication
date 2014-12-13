@@ -10,11 +10,11 @@ import vr.thrift.ClientRequest;
 import vr.thrift.Log;
 import vr.thrift.LogStatus;
 import vr.thrift.ReplicaStatus;
+import vr.thrift.ViewChangePhase;
 
 
 public class ReplicaState {
 	private ReplicaState() {
-		
 	}	
 	public static ReplicaState getInstance(){
 		return ReplicaStateHolder.instance;
@@ -23,8 +23,6 @@ public class ReplicaState {
 	private static class ReplicaStateHolder {
 		static final ReplicaState instance = new ReplicaState();
 	}
-	
-	
 	
 	List<String> qouroms ;
 	int replicaNumber;
@@ -38,11 +36,18 @@ public class ReplicaState {
 	HashMap<String, ClientRequest > clientTable;
 	ArrayDeque<ClientRequest> requestQueue;
 	long primaryLastTimestamp;
+	ViewChangePhase viewChangePhase = ViewChangePhase.startView;
 	List<Boolean> startViewChangeRequests = new ArrayList<Boolean>();
 	List<Boolean> doViewChangeRequests = new ArrayList<Boolean>();
 	TreeMap<Integer,Log> doViewChangeMaxLog ;
 	
 	
+	public ViewChangePhase getViewChangePhase() {
+		return viewChangePhase;
+	}
+	public void setViewChangePhase(ViewChangePhase viewChangePhase) {
+		this.viewChangePhase = viewChangePhase;
+	}
 	public TreeMap<Integer, Log> getDoViewChangeMaxLog() {
 		return doViewChangeMaxLog;
 	}
@@ -171,4 +176,19 @@ public class ReplicaState {
 	public void updatePrimaryLastTimestamp(){
 		setPrimaryLastTimestamp(System.currentTimeMillis());
 	}
+	@Override
+	public String toString() {
+		return "ReplicaState [qouroms=" + qouroms + ", replicaNumber="
+				+ replicaNumber + ", viewNumber=" + viewNumber
+				+ ", prevViewNumber=" + prevViewNumber + ", status=" + status
+				+ ", opNumber=" + opNumber + ", logs=" + logs
+				+ ", commitNumber=" + commitNumber + ", checkPoint="
+				+ checkPoint + ", clientTable=" + clientTable
+				+ ", requestQueue=" + requestQueue + ", primaryLastTimestamp="
+				+ primaryLastTimestamp + ", viewChangePhase=" + viewChangePhase
+				+ ", startViewChangeRequests=" + startViewChangeRequests
+				+ ", doViewChangeRequests=" + doViewChangeRequests
+				+ ", doViewChangeMaxLog=" + doViewChangeMaxLog + "]";
+	}
+	
 }

@@ -38,9 +38,6 @@ import org.slf4j.LoggerFactory;
 public class DoViewChangeResponse implements org.apache.thrift.TBase<DoViewChangeResponse, DoViewChangeResponse._Fields>, java.io.Serializable, Cloneable, Comparable<DoViewChangeResponse> {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("DoViewChangeResponse");
 
-  private static final org.apache.thrift.protocol.TField REPLICA_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("replicaNumber", org.apache.thrift.protocol.TType.I32, (short)1);
-  private static final org.apache.thrift.protocol.TField NEW_VIEW_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("newViewNumber", org.apache.thrift.protocol.TType.I32, (short)2);
-  private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.BOOL, (short)3);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -48,15 +45,10 @@ public class DoViewChangeResponse implements org.apache.thrift.TBase<DoViewChang
     schemes.put(TupleScheme.class, new DoViewChangeResponseTupleSchemeFactory());
   }
 
-  public int replicaNumber; // required
-  public int newViewNumber; // required
-  public boolean success; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    REPLICA_NUMBER((short)1, "replicaNumber"),
-    NEW_VIEW_NUMBER((short)2, "newViewNumber"),
-    SUCCESS((short)3, "success");
+;
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -71,12 +63,6 @@ public class DoViewChangeResponse implements org.apache.thrift.TBase<DoViewChang
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // REPLICA_NUMBER
-          return REPLICA_NUMBER;
-        case 2: // NEW_VIEW_NUMBER
-          return NEW_VIEW_NUMBER;
-        case 3: // SUCCESS
-          return SUCCESS;
         default:
           return null;
       }
@@ -115,21 +101,9 @@ public class DoViewChangeResponse implements org.apache.thrift.TBase<DoViewChang
       return _fieldName;
     }
   }
-
-  // isset id assignments
-  private static final int __REPLICANUMBER_ISSET_ID = 0;
-  private static final int __NEWVIEWNUMBER_ISSET_ID = 1;
-  private static final int __SUCCESS_ISSET_ID = 2;
-  private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.REPLICA_NUMBER, new org.apache.thrift.meta_data.FieldMetaData("replicaNumber", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "int")));
-    tmpMap.put(_Fields.NEW_VIEW_NUMBER, new org.apache.thrift.meta_data.FieldMetaData("newViewNumber", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32        , "int")));
-    tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(DoViewChangeResponse.class, metaDataMap);
   }
@@ -137,28 +111,10 @@ public class DoViewChangeResponse implements org.apache.thrift.TBase<DoViewChang
   public DoViewChangeResponse() {
   }
 
-  public DoViewChangeResponse(
-    int replicaNumber,
-    int newViewNumber,
-    boolean success)
-  {
-    this();
-    this.replicaNumber = replicaNumber;
-    setReplicaNumberIsSet(true);
-    this.newViewNumber = newViewNumber;
-    setNewViewNumberIsSet(true);
-    this.success = success;
-    setSuccessIsSet(true);
-  }
-
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public DoViewChangeResponse(DoViewChangeResponse other) {
-    __isset_bitfield = other.__isset_bitfield;
-    this.replicaNumber = other.replicaNumber;
-    this.newViewNumber = other.newViewNumber;
-    this.success = other.success;
   }
 
   public DoViewChangeResponse deepCopy() {
@@ -167,123 +123,15 @@ public class DoViewChangeResponse implements org.apache.thrift.TBase<DoViewChang
 
   @Override
   public void clear() {
-    setReplicaNumberIsSet(false);
-    this.replicaNumber = 0;
-    setNewViewNumberIsSet(false);
-    this.newViewNumber = 0;
-    setSuccessIsSet(false);
-    this.success = false;
-  }
-
-  public int getReplicaNumber() {
-    return this.replicaNumber;
-  }
-
-  public DoViewChangeResponse setReplicaNumber(int replicaNumber) {
-    this.replicaNumber = replicaNumber;
-    setReplicaNumberIsSet(true);
-    return this;
-  }
-
-  public void unsetReplicaNumber() {
-    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __REPLICANUMBER_ISSET_ID);
-  }
-
-  /** Returns true if field replicaNumber is set (has been assigned a value) and false otherwise */
-  public boolean isSetReplicaNumber() {
-    return EncodingUtils.testBit(__isset_bitfield, __REPLICANUMBER_ISSET_ID);
-  }
-
-  public void setReplicaNumberIsSet(boolean value) {
-    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __REPLICANUMBER_ISSET_ID, value);
-  }
-
-  public int getNewViewNumber() {
-    return this.newViewNumber;
-  }
-
-  public DoViewChangeResponse setNewViewNumber(int newViewNumber) {
-    this.newViewNumber = newViewNumber;
-    setNewViewNumberIsSet(true);
-    return this;
-  }
-
-  public void unsetNewViewNumber() {
-    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __NEWVIEWNUMBER_ISSET_ID);
-  }
-
-  /** Returns true if field newViewNumber is set (has been assigned a value) and false otherwise */
-  public boolean isSetNewViewNumber() {
-    return EncodingUtils.testBit(__isset_bitfield, __NEWVIEWNUMBER_ISSET_ID);
-  }
-
-  public void setNewViewNumberIsSet(boolean value) {
-    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __NEWVIEWNUMBER_ISSET_ID, value);
-  }
-
-  public boolean isSuccess() {
-    return this.success;
-  }
-
-  public DoViewChangeResponse setSuccess(boolean success) {
-    this.success = success;
-    setSuccessIsSet(true);
-    return this;
-  }
-
-  public void unsetSuccess() {
-    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __SUCCESS_ISSET_ID);
-  }
-
-  /** Returns true if field success is set (has been assigned a value) and false otherwise */
-  public boolean isSetSuccess() {
-    return EncodingUtils.testBit(__isset_bitfield, __SUCCESS_ISSET_ID);
-  }
-
-  public void setSuccessIsSet(boolean value) {
-    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case REPLICA_NUMBER:
-      if (value == null) {
-        unsetReplicaNumber();
-      } else {
-        setReplicaNumber((Integer)value);
-      }
-      break;
-
-    case NEW_VIEW_NUMBER:
-      if (value == null) {
-        unsetNewViewNumber();
-      } else {
-        setNewViewNumber((Integer)value);
-      }
-      break;
-
-    case SUCCESS:
-      if (value == null) {
-        unsetSuccess();
-      } else {
-        setSuccess((Boolean)value);
-      }
-      break;
-
     }
   }
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case REPLICA_NUMBER:
-      return Integer.valueOf(getReplicaNumber());
-
-    case NEW_VIEW_NUMBER:
-      return Integer.valueOf(getNewViewNumber());
-
-    case SUCCESS:
-      return Boolean.valueOf(isSuccess());
-
     }
     throw new IllegalStateException();
   }
@@ -295,12 +143,6 @@ public class DoViewChangeResponse implements org.apache.thrift.TBase<DoViewChang
     }
 
     switch (field) {
-    case REPLICA_NUMBER:
-      return isSetReplicaNumber();
-    case NEW_VIEW_NUMBER:
-      return isSetNewViewNumber();
-    case SUCCESS:
-      return isSetSuccess();
     }
     throw new IllegalStateException();
   }
@@ -318,54 +160,12 @@ public class DoViewChangeResponse implements org.apache.thrift.TBase<DoViewChang
     if (that == null)
       return false;
 
-    boolean this_present_replicaNumber = true;
-    boolean that_present_replicaNumber = true;
-    if (this_present_replicaNumber || that_present_replicaNumber) {
-      if (!(this_present_replicaNumber && that_present_replicaNumber))
-        return false;
-      if (this.replicaNumber != that.replicaNumber)
-        return false;
-    }
-
-    boolean this_present_newViewNumber = true;
-    boolean that_present_newViewNumber = true;
-    if (this_present_newViewNumber || that_present_newViewNumber) {
-      if (!(this_present_newViewNumber && that_present_newViewNumber))
-        return false;
-      if (this.newViewNumber != that.newViewNumber)
-        return false;
-    }
-
-    boolean this_present_success = true;
-    boolean that_present_success = true;
-    if (this_present_success || that_present_success) {
-      if (!(this_present_success && that_present_success))
-        return false;
-      if (this.success != that.success)
-        return false;
-    }
-
     return true;
   }
 
   @Override
   public int hashCode() {
     List<Object> list = new ArrayList<Object>();
-
-    boolean present_replicaNumber = true;
-    list.add(present_replicaNumber);
-    if (present_replicaNumber)
-      list.add(replicaNumber);
-
-    boolean present_newViewNumber = true;
-    list.add(present_newViewNumber);
-    if (present_newViewNumber)
-      list.add(newViewNumber);
-
-    boolean present_success = true;
-    list.add(present_success);
-    if (present_success)
-      list.add(success);
 
     return list.hashCode();
   }
@@ -378,36 +178,6 @@ public class DoViewChangeResponse implements org.apache.thrift.TBase<DoViewChang
 
     int lastComparison = 0;
 
-    lastComparison = Boolean.valueOf(isSetReplicaNumber()).compareTo(other.isSetReplicaNumber());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetReplicaNumber()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.replicaNumber, other.replicaNumber);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetNewViewNumber()).compareTo(other.isSetNewViewNumber());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetNewViewNumber()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.newViewNumber, other.newViewNumber);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetSuccess()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     return 0;
   }
 
@@ -428,17 +198,6 @@ public class DoViewChangeResponse implements org.apache.thrift.TBase<DoViewChang
     StringBuilder sb = new StringBuilder("DoViewChangeResponse(");
     boolean first = true;
 
-    sb.append("replicaNumber:");
-    sb.append(this.replicaNumber);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("newViewNumber:");
-    sb.append(this.newViewNumber);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("success:");
-    sb.append(this.success);
-    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -458,8 +217,6 @@ public class DoViewChangeResponse implements org.apache.thrift.TBase<DoViewChang
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
-      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-      __isset_bitfield = 0;
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);
@@ -484,30 +241,6 @@ public class DoViewChangeResponse implements org.apache.thrift.TBase<DoViewChang
           break;
         }
         switch (schemeField.id) {
-          case 1: // REPLICA_NUMBER
-            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
-              struct.replicaNumber = iprot.readI32();
-              struct.setReplicaNumberIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 2: // NEW_VIEW_NUMBER
-            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
-              struct.newViewNumber = iprot.readI32();
-              struct.setNewViewNumberIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 3: // SUCCESS
-            if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
-              struct.success = iprot.readBool();
-              struct.setSuccessIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -523,15 +256,6 @@ public class DoViewChangeResponse implements org.apache.thrift.TBase<DoViewChang
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldBegin(REPLICA_NUMBER_FIELD_DESC);
-      oprot.writeI32(struct.replicaNumber);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(NEW_VIEW_NUMBER_FIELD_DESC);
-      oprot.writeI32(struct.newViewNumber);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-      oprot.writeBool(struct.success);
-      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -549,44 +273,11 @@ public class DoViewChangeResponse implements org.apache.thrift.TBase<DoViewChang
     @Override
     public void write(org.apache.thrift.protocol.TProtocol prot, DoViewChangeResponse struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
-      BitSet optionals = new BitSet();
-      if (struct.isSetReplicaNumber()) {
-        optionals.set(0);
-      }
-      if (struct.isSetNewViewNumber()) {
-        optionals.set(1);
-      }
-      if (struct.isSetSuccess()) {
-        optionals.set(2);
-      }
-      oprot.writeBitSet(optionals, 3);
-      if (struct.isSetReplicaNumber()) {
-        oprot.writeI32(struct.replicaNumber);
-      }
-      if (struct.isSetNewViewNumber()) {
-        oprot.writeI32(struct.newViewNumber);
-      }
-      if (struct.isSetSuccess()) {
-        oprot.writeBool(struct.success);
-      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, DoViewChangeResponse struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(3);
-      if (incoming.get(0)) {
-        struct.replicaNumber = iprot.readI32();
-        struct.setReplicaNumberIsSet(true);
-      }
-      if (incoming.get(1)) {
-        struct.newViewNumber = iprot.readI32();
-        struct.setNewViewNumberIsSet(true);
-      }
-      if (incoming.get(2)) {
-        struct.success = iprot.readBool();
-        struct.setSuccessIsSet(true);
-      }
     }
   }
 

@@ -2,6 +2,7 @@ package vr.code.processes;
 
 import java.util.ArrayList;
 
+import org.apache.thrift.async.AsyncMethodCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,8 @@ import vr.thrift.ReplicaStatus;
 import vr.thrift.RequestResponseCode;
 import vr.thrift.StartViewChangeParameter;
 import vr.thrift.StartViewParameter;
+import vr.thrift.ViewChangePhase;
+import vr.thrift.VRCodeService.AsyncClient.ping_call;
 
 public class Poller extends Thread{
 
@@ -30,13 +33,16 @@ public class Poller extends Thread{
 
 	ClientRequest currentRequest = null;
 	public void run() {
-
+		int period = 0;
 		while(true){
+			
+			//System.out.println(replicaState.toString());
 			try {
 				Thread.sleep(Constants.POLL_TIMEOUT);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			
 			if(replicaState.getStatus() == ReplicaStatus.normal 
 					&&replicaState.getReplicaNumber() == replicaState.getPrimaryReplica()){
 				if(currentRequest == null){
@@ -44,11 +50,16 @@ public class Poller extends Thread{
 				}else{
 					monitorLogStatus();
 				}
+				if(period++%100 == 0){
+					period = 1;
+					pingReplicas();
+				}
 			}else{
 				monitorPrimary();
-				monitorStartViewChangeRequests();
-				monitorDoViewChangeRequests();
-
+				if(replicaState.getViewChangePhase() == ViewChangePhase.startViewChange){
+					monitorStartViewChangeRequests();}
+				if(replicaState.getViewChangePhase() == ViewChangePhase.doViewChange){
+					monitorDoViewChangeRequests();}
 			}
 		}
 	}
@@ -124,6 +135,7 @@ public class Poller extends Thread{
 
 		if(System.currentTimeMillis() - replicaState.getPrimaryLastTimestamp() > timeout){
 			replicaState.updatePrimaryLastTimestamp();
+			replicaState.setViewChangePhase(ViewChangePhase.startViewChange);
 			int newViewNumber = replicaState.getNextViewNumber();
 
 			for(int i=0; i< replicaState.getQouroms().size(); i++){
@@ -151,8 +163,11 @@ public class Poller extends Thread{
 				sum =sum+1;
 			}
 		}
-		if(sum > replicaState.majoity()){
+		if(sum >= replicaState.majoity()){
+			
+			LOGGER.info("Got majority for StartViewChange");
 			replicaState.updatePrimaryLastTimestamp();
+			replicaState.setViewChangePhase(ViewChangePhase.doViewChange);
 			if(replicaState.getPrimaryReplica() == replicaState.getReplicaNumber()){
 				replicaState.getDoViewChangeRequests().set(replicaState.getReplicaNumber(),true);
 			}else{
@@ -182,6 +197,7 @@ public class Poller extends Thread{
 		if(sum > replicaState.majoity()){
 			replicaState.updatePrimaryLastTimestamp();
 			replicaState.setStatus(ReplicaStatus.normal);
+			replicaState.setViewChangePhase(ViewChangePhase.startView);;
 			for(int i=0; i< replicaState.getQouroms().size(); i++){
 				if(i == replicaState.getReplicaNumber()){continue;}
 				StartViewParameter startViewParameter 
@@ -194,6 +210,25 @@ public class Poller extends Thread{
 														0);
 				VRCodeClientAPI.callStartView(i, Constants.START_VIEW_TIMEOUT, startViewParameter, new StartViewCallback(startViewParameter));
 			}
+		}
+	}
+	
+	
+	
+	public void pingReplicas(){
+		for(int i=0; i< replicaState.getQouroms().size(); i++){
+			if(i == replicaState.getReplicaNumber()){continue;}
+			VRCodeClientAPI.callPing(i, 10, new AsyncMethodCallback<ping_call>() {
+				
+				@Override
+				public void onError(Exception arg0) {
+				}
+				
+				@Override
+				public void onComplete(ping_call arg0) {
+				}
+
+			});
 		}
 	}
 

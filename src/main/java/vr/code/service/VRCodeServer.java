@@ -16,15 +16,10 @@ import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import vr.code.client.api.VRCodeClientAPI;
-import vr.code.client.callback.PrepareCallback;
-import vr.code.processes.RequestPoller;
+import vr.code.processes.Poller;
 import vr.thrift.ClientRequest;
 import vr.thrift.Log;
-import vr.thrift.LogStatus;
-import vr.thrift.PrepareParameter;
 import vr.thrift.ReplicaStatus;
-import vr.thrift.RequestResponseCode;
 import vr.thrift.VRCodeService;
 import vr.thrift.VRCodeService.AsyncIface;
 
@@ -102,6 +97,11 @@ public class VRCodeServer {
 		replicaState.setClientTable(new HashMap<String, ClientRequest>());
 		replicaState.setRequestQueue(new ArrayDeque<ClientRequest>());
 		replicaState.setLogs(new TreeMap<Integer,Log>());
+		for(int j =0; j< replicaState.getQouroms().size(); j++){
+			replicaState.getStartViewChangeRequests().add(false);
+			replicaState.getDoViewChangeRequests().add(false);
+			
+		}
 
 		//TODO: run recovery
 		replicaState.setStatus(ReplicaStatus.normal);

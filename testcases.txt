@@ -1,0 +1,3 @@
+Start
+5 node cluster:
+start 3 node initially. 
